@@ -9,7 +9,9 @@
 #include <string.h>
 #include <stdbool.h>         //bool¿‡–Õ
 #include <math.h>
+#include <ctype.h>
 #include <tchar.h>
+#include <stdbool.h>
 #include "Fatearad.h"
 #include "GameLib.h"
 

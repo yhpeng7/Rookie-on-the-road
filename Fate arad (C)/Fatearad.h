@@ -16,8 +16,8 @@
  * 描  述：一个C语言小项目
  * 创建人：鹏
  * 日  期：2018-02-20
- * 版  本：1.0
- * 博  客：https://yhklsdf666.github.io/
+ * 版  本：1.1
+ * 博  客：
  *
  **************************************************/
 
@@ -67,7 +67,6 @@ typedef struct _map
 }Map;
 
 
-/*玩家*/
 typedef struct _player
 {
     int id;
@@ -85,7 +84,15 @@ typedef struct _player
     Prop weapon;
     Prop armor;
     Bag bag;
+    struct _player *next;
 }Player;
+
+typedef struct _list{
+    struct _player * head;
+    struct _player * tail;
+}List;
+
+List *Target,ShanXi,BeiJing,GuangDong,JiangSu,HeiLongJiang,HeiLongJiang;
 
 /*怪物*/
 typedef struct _monster
@@ -115,7 +122,7 @@ void ShowMainMenu();
 void ProcessMainMenu(char key);
 void ShowPlayerInfo();
 void ShowMonster();
-void FightMonster();
+void FightMonster(int,int*);
 void AreaMovement();
 void ShowStore();
 void Transaction();

@@ -1,8 +1,8 @@
 #include "Head.h"
 
-void main()
+int main()
 {
     Fatearad();
+    return 0;
 }
-
 
