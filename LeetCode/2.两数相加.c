@@ -1,4 +1,11 @@
 /**
+ * 1. 进位后当前位减十
+ * 2. 如果进位后l1链表后面没有可以保存进位的节点...
+ * 3. 如果l1位数少就把l2后面的接上去---在循环的过程中找到l1的尾节点
+ * 4. 刚开始没有考虑这种骚情况---(99 + 9)...循环判断条件就是(l1 && l2)，最后改为只在循环判断条件里判断l1，在循环体内判断l2
+ */ 
+  
+/**
  * Definition for singly-linked list.
  * struct ListNode {
  *     int val;
@@ -6,12 +13,6 @@
  * };
  */
  
- /**
-  * 1. 进位后当前位减十
-  * 2. 如果进位后l1链表后面没有可以保存进位的节点...
-  * 3. 如果l1位数少就把l2后面的接上去---在循环的过程中找到l1的尾节点
-  * 4. 刚开始没有考虑这种骚情况---(99 + 9)...循环判断条件就是(l1 && l2)，最后改为只在循环判断条件里判断l1，在循环体内判断l2
-  */ 
 struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
     struct ListNode* newhead = l1;
     struct ListNode* tail = NULL;
@@ -47,8 +48,7 @@ struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
     return newhead;
 }
 
-/*官方答案*/
-/*
+//范例代码
 class Solution {
 public:
 ListNode *addTwoNumbers(ListNode *l1, ListNode *l2) {
@@ -64,4 +64,3 @@ ListNode *addTwoNumbers(ListNode *l1, ListNode *l2) {
     }
     return preHead.next;
 };
-*/
