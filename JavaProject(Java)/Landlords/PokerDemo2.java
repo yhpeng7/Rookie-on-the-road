@@ -1,5 +1,9 @@
 import java.util.*;
 
+/*
+ * 思路：先把54张牌放到poker(ArrayList<String>)中(按照3333,4444 ... 2222的顺序放进去),用0 - 53 将order(ArrayList<Integer>)填满，用pokerHm(HashMap<Integer, String>)按(0-3,1-3,2-3 ... 53-大王的顺序)以键值对的形式把牌放进去,再用Collections.shuffle(order)将order的顺序打乱，然后用TreeSet将3个玩家和底牌的牌号(order)按顺序放进去，最后再通过pokerHm.get()将玩家的牌和底牌打印出来
+ */
+
 public class PokerDemo2 {
     public static void main(String[] args) {
         ArrayList<String> poker = new ArrayList<>();
