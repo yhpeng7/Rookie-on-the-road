@@ -99,7 +99,6 @@ Map mapArray[8][8] =
         {63, "  DNF", 1, {6, 3}, " "},
         {64, "  DNF", 1, {7, 3}, " "}
     }
-
 };
 
 /*玩家信息*/
@@ -109,7 +108,7 @@ Map mapArray[8][8] =
 
 /*怪物信息*/
 Monster monsterArray[] = {
-    {1, "投掷十夫长", 1000, 10000, 1000, 100, 5, 10, 5, 1, {0, 0}},
+    {1, "投掷十夫长", 1000, 1000, 100, 100, 5, 10, 5, 1, {0, 0}},
     {2, "库罗猫妖", 200, 200, 8, 2, 5, 10, 5, 1, {0, 0}},
     {3, "园丁鲁尔", 800, 100, 5, 2, 5, 10, 5, 1, {0, 0}},
     {4, "浮游石巨人", 800, 100, 5, 2, 5, 10, 5, 1, {0, 0}},
@@ -366,7 +365,7 @@ void Register()
     for(i=0;(c=getche())!=13;++i)
         currPlayer -> password[i] = c;
 
-        currPlayer -> hp = 100000000;
+        currPlayer -> hp = 10000;
         currPlayer -> mp = 10000;
         currPlayer -> level = 1;
         currPlayer -> gold = 50000000;
@@ -729,6 +728,9 @@ void FightMonster(int currMapMonsterCount, int *monsterIndexs)
         /*玩家死*/
         if((currPlayer -> hp) <= 0)
         {
+            currPlayer -> hp = 0;
+            if(currPlayer -> level > 0)
+                currPlayer -> level --;
             SetPosition(MARGIN_X + 7, INFO_END_Y - 1);
             printf("                                                                                    ");
             SetPosition(MARGIN_X + 7, INFO_END_Y - 1);
@@ -740,17 +742,11 @@ void FightMonster(int currMapMonsterCount, int *monsterIndexs)
                 {
                 SetPosition(MARGIN_X + 7, INFO_END_Y - 1);
                 printf("您的游戏积分不足！");
-                currPlayer -> level --;
-                currPlayer -> hp = 0;
                 return;
                 }
                 currPlayer -> gamecredit --;
-                currPlayer -> hp = 100;
-            }
-            if(key == 'n' || key == 'N')
-            {
-                currPlayer -> level --;
-                currPlayer -> hp = 0;
+                currPlayer -> hp = 10000;
+                currPlayer -> level++;
             }
         }
         /*怪物死*/

@@ -196,6 +196,7 @@ bool FindPlayer(List *list)
     Player *find = NULL;
     printf("请输入要查找的玩家ID（按0退出查找）：\n");
     scanf("%d",&id);
+    fflush(stdin);
     if(id == 0)
         return;
     if(!(find = Find(list,id)))
@@ -224,6 +225,7 @@ void Modification(List *list)
     Player *find = NULL;
     printf("请输入要修改的玩家ID(按0退出修改):\n");
     scanf("%d",&id);
+    fflush(stdin);
     if(id == 0)
         return;
     if(!(find = Find(list,id)))

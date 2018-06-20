@@ -2,161 +2,52 @@
 
 void Write()
 {
-    Player *temp1 = ShanXi.head;
-    Player *temp2 = BeiJing.head;
-    Player *temp3 = GuangDong.head;
-    Player *temp4 = JiangSu.head;
-    Player *temp5 = HeiLongJiang.head;
+    Player *region[] = {ShanXi.head,BeiJing.head,GuangDong.head,JiangSu.head,HeiLongJiang.head};
+    char *regionName[] = {"ShanXi.bin","BeiJing.bin","GuangDong.bin","JiangSu.bin","HeiLongJiang.bin"};
+    FILE *fp;
 
-    FILE *fp_1,*fp_2,*fp_3,*fp_4,*fp_5;
+    int i,regionCount = sizeof(region) / sizeof(region[0]);
 
-    /*陕西*/
-    fp_1 = fopen("ShanXi.bin","wb+");
-
-    while(temp1)
+    for(i = 0;i < regionCount;i++)
     {
-        fwrite(temp1,sizeof(Player),1,fp_1);
-        temp1 = temp1 -> next;
+        fp = fopen(regionName[i],"wb+");
+        Player *temp = region[i];
+
+        while(temp)
+        {
+            fwrite(temp,sizeof(Player),1,fp);
+            temp = temp -> next;
+        }
+
+        fclose(fp);
     }
-
-    fclose(fp_1);
-
-    /*北京*/
-    fp_2 = fopen("BeiJing.bin","wb+");
-
-    while(temp2)
-    {
-        fwrite(temp2,sizeof(Player),1,fp_2);
-        temp2 = temp2 -> next;
-    }
-
-    fclose(fp_2);
-
-    /*广东*/
-    fp_3 = fopen("GuangDong.bin","wb+");
-
-    while(temp3)
-    {
-        fwrite(temp3,sizeof(Player),1,fp_3);
-        temp3 = temp3 -> next;
-    }
-
-    fclose(fp_3);
-
-    /*江苏*/
-    fp_4 = fopen("JiangSu.bin","wb+");
-
-    while(temp4)
-    {
-        fwrite(temp4,sizeof(Player),1,fp_4);
-        temp4 = temp4 -> next;
-    }
-
-    fclose(fp_4);
-
-    /*黑龙江*/
-    fp_5 = fopen("HeiLongJiang.bin","wb+");
-
-    while(temp5)
-    {
-        fwrite(temp5,sizeof(Player),1,fp_5);
-        temp5 = temp5 -> next;
-    }
-
-    fclose(fp_5);
 }
-
 
 void Read(List *currlist)
 {
+    List *region[] = {&ShanXi,&BeiJing,&GuangDong,&JiangSu,&HeiLongJiang};
     Player *temp = NULL;
+    char *regionName[] = {"ShanXi.bin","BeiJing.bin","GuangDong.bin","JiangSu.bin","HeiLongJiang.bin"};
+    FILE *fp;
 
-    ShanXi.head = NULL;
-    BeiJing.head = NULL;
-    GuangDong.head = NULL;
-    JiangSu.head = NULL;
-    HeiLongJiang.head = NULL;
+    int i,regionCount = sizeof(region) / sizeof(region[0]);
 
-    FILE *fp_1,*fp_2,*fp_3,*fp_4,*fp_5;
-
-    int i,x,count;
-    /*陕西*/
-    fp_1 = fopen("ShanXi.bin","ab+");
-
-    fseek(fp_1,0L,SEEK_END);
-    x = ftell(fp_1);
-    count = x / sizeof(Player);
-    fseek(fp_1,0L,SEEK_SET);
-
-    for(i = 0;i < count;i++)
+    for(i = 0;i < regionCount;i++)
     {
-        temp = Add(&ShanXi);
-        fread(temp,sizeof(Player),1,fp_1);
+        region[i] -> head = NULL;
+        fp = fopen(regionName[i],"ab+");
+
+        int j,nodeCount;
+        fseek(fp,0L,SEEK_END);
+        nodeCount = ftell(fp) / sizeof(Player);
+        fseek(fp,0L,SEEK_SET);
+
+        for(j = 0;j < nodeCount;j++)
+        {
+            temp = Add(region[i]);
+            fread(temp,sizeof(Player),1,fp);
+        }
+
+        fclose(fp);
     }
-
-    fclose(fp_1);
-
-    /*北京*/
-    fp_2 = fopen("BeiJing.bin","ab+");
-
-    fseek(fp_1,0L,SEEK_END);
-    x = ftell(fp_1);
-    count = x / sizeof(Player);
-    fseek(fp_1,0L,SEEK_SET);
-
-    for(i = 0;i < count;i++)
-    {
-        temp = Add(&BeiJing);
-        fread(temp,sizeof(Player),1,fp_1);
-    }
-
-    fclose(fp_2);
-
-    /*广东*/
-    fp_3 = fopen("GuangDong.bin","ab+");
-
-    fseek(fp_1,0L,SEEK_END);
-    x = ftell(fp_1);
-    count = x / sizeof(Player);
-    fseek(fp_1,0L,SEEK_SET);
-
-    for(i = 0;i < count;i++)
-    {
-        temp = Add(&GuangDong);
-        fread(temp,sizeof(Player),1,fp_1);
-    }
-
-    fclose(fp_3);
-
-    /*江苏*/
-    fp_4 = fopen("JiangSu.bin","ab+");
-
-    fseek(fp_1,0L,SEEK_END);
-    x = ftell(fp_1);
-    count = x / sizeof(Player);
-    fseek(fp_1,0L,SEEK_SET);
-
-    for(i = 0;i < count;i++)
-    {
-        temp = Add(&JiangSu);
-        fread(temp,sizeof(Player),1,fp_1);
-    }
-
-    fclose(fp_4);
-
-    /*黑龙江*/
-    fp_5 = fopen("HeiLongJiang.bin","ab+");
-
-    fseek(fp_1,0L,SEEK_END);
-    x = ftell(fp_1);
-    count = x / sizeof(Player);
-    fseek(fp_1,0L,SEEK_SET);
-
-    for(i = 0;i < count;i++)
-    {
-        temp = Add(&HeiLongJiang);
-        fread(temp,sizeof(Player),1,fp_1);
-    }
-
-    fclose(fp_5);
 }
