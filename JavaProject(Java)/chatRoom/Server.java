@@ -40,8 +40,8 @@ public class Server {
                 dos = new DataOutputStream(client.getOutputStream());
 
                 this.name = dis.readUTF();
-                this.send("欢迎您进入聊天室！");
-                this.sendOthers(this.name + "进入了聊天室。");
+                this.send("<系统消息>：欢迎您进入聊天室！");
+                this.sendOthers(this.name + "进入了聊天室。",true);
             } catch (IOException e) {
                 FileUtilClose.close(dos, dis);
                 isRunning = false;
@@ -71,16 +71,14 @@ public class Server {
             }
         }
 
-        private void sendOthers(String msg) {
+        private void sendOthers(String msg,boolean sys) {
             if (msg.startsWith("@")) {
                 if (msg.indexOf(":") > -1) {
-                    boolean hasFlag = false;
                     String targetName = msg.substring(1, msg.indexOf(':'));
                     String targetMsg = msg.substring(msg.indexOf(':') + 1);
                     for (myChannel target : all) {
                         if (target.name.equals(targetName)) {   //不能用==！！！
-                            hasFlag = true;
-                            target.send("From:[" + this.name + "]:" + targetMsg);
+                            target.send("From -> " + this.name + ":" + targetMsg);
                         }
                     }
                 } else {
@@ -89,8 +87,8 @@ public class Server {
             } else {
                 for (myChannel other : all) {
                     if (other != this) {
-                        if (msg.endsWith("进入了聊天室。")) {
-                            other.send("[系统消息]：" + msg);
+                        if (sys == true) {   //系统信息
+                            other.send("<系统消息>：" + msg);
                         } else {
                             other.send("[" + this.name + "]:" + msg);
                         }
@@ -102,7 +100,7 @@ public class Server {
         @Override
         public void run() {
             while (isRunning) {
-                sendOthers(reveive());
+                sendOthers(reveive(),false);
             }
         }
     }
