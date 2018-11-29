@@ -1,21 +1,25 @@
 package Tree;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class HuffmanTreeDemo {
+public final class HuffmanTreeDemo {
 
     public static void main(String[] args) {
 
-        HuffmanTreeDemo demo = new HuffmanTreeDemo();
-        int weight[] = {1, 3, 6, 9};
-        HTNode[] huffmanTree = new HTNode[2 * weight.length - 1];
-        demo.createHuffmanTree(huffmanTree, weight);
-        List<String> huffmanCode = new ArrayList<>();
-        demo.createHuffmanCode(huffmanTree, huffmanCode,weight.length);
-        for (String code : huffmanCode) {
-            System.out.println(code);
-        }
+//        HuffmanTreeDemo demo = new HuffmanTreeDemo();
+//        int weight[] = {1, 3, 6, 9};
+//        HTNode[] huffmanTree = new HTNode[2 * weight.length - 1];
+//        demo.createHuffmanTree(huffmanTree, weight);
+//        for (int i = 0; i < huffmanTree.length; i++) {
+//            System.out.println(huffmanTree[i].getWeight());
+//        }
+//        List<String> huffmanCode = new ArrayList<>();
+//        demo.createHuffmanCode(huffmanTree, huffmanCode,weight.length);
+//        for (String code : huffmanCode) {
+//            System.out.println(code);
+//        }
     }
 
     private void createHuffmanTree(HTNode[] huffmanTree, int[] weight) {
@@ -57,13 +61,14 @@ public class HuffmanTreeDemo {
         }
     }
 
-    private void createHuffmanCode(HTNode[] huffmanTree, List<String> huffmanCode,int count) {
+    private void createHuffmanCode(HTNode[] huffmanTree, List<String> huffmanCode, int count) {
+        StringBuilder code;
         for (int i = 0; i < count; i++) {
-            StringBuilder code = new StringBuilder();
+            code = new StringBuilder();
             int currentNode = i;
             int parent = huffmanTree[currentNode].getParent();
             while (parent != 0) {
-                if (huffmanTree[i].getlChild() == currentNode) {
+                if (huffmanTree[parent].getlChild() == currentNode) {
                     code.append('0');
                 } else {
                     code.append('1');
@@ -74,5 +79,11 @@ public class HuffmanTreeDemo {
             code.reverse();
             huffmanCode.add(code.toString());
         }
+    }
+
+    private HashMap<String,String> translateHuffmanCode(HTNode[] huffmanTree, List<String> huffmanCode) {
+        HashMap<String, String> huffmanMap = new HashMap<>();
+
+        return huffmanMap;
     }
 }

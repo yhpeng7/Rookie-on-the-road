@@ -1,6 +1,6 @@
 package Tree;
 
-public class HTNode {
+public final class HTNode {
 
     private int weight;
 
@@ -9,7 +9,7 @@ public class HTNode {
     private int lChild;
 
     private int rChild;
-
+;
     public HTNode(int weight, int parent, int lChild, int rChild) {
         this.weight = weight;
         this.parent = parent;
