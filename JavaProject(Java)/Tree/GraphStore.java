@@ -16,6 +16,7 @@ public final class GraphStore {
             arc = new edgeType[Constant.MAXVEX][Constant.MAXVEX];
         }
 
+
         public vertexType[] getVexs() {
             return vexs;
         }
@@ -43,11 +44,37 @@ public final class GraphStore {
 
     final class adjList {
 
+        private adjListGraph adjListGraph;
+
+        public adjList.adjListGraph getAdjListGraph() {
+            return adjListGraph;
+        }
+
+        public void setAdjListGraph(adjList.adjListGraph adjListGraph) {
+            this.adjListGraph = adjListGraph;
+        }
+
         final class vertexNode {
 
             private vertexType data;
 
             private edgeNode firstedge;
+
+            public vertexType getData() {
+                return data;
+            }
+
+            public void setData(vertexType data) {
+                this.data = data;
+            }
+
+            public edgeNode getFirstedge() {
+                return firstedge;
+            }
+
+            public void setFirstedge(edgeNode firstedge) {
+                this.firstedge = firstedge;
+            }
         }
 
         final class edgeNode {
@@ -57,6 +84,30 @@ public final class GraphStore {
             edgeType weight;
 
             edgeNode next;
+
+            public int getAdjvex() {
+                return adjvex;
+            }
+
+            public void setAdjvex(int adjvex) {
+                this.adjvex = adjvex;
+            }
+
+            public edgeType getWeight() {
+                return weight;
+            }
+
+            public void setWeight(edgeType weight) {
+                this.weight = weight;
+            }
+
+            public edgeNode getNext() {
+                return next;
+            }
+
+            public void setNext(edgeNode next) {
+                this.next = next;
+            }
         }
 
         final class adjListGraph {
@@ -101,6 +152,10 @@ public final class GraphStore {
 final class vertexType {
 
     private String point;
+
+    public vertexType(String point) {
+        this.point = point;
+    }
 
     public String getPoint() {
         return point;

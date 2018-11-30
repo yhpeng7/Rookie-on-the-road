@@ -8,18 +8,18 @@ public final class HuffmanTreeDemo {
 
     public static void main(String[] args) {
 
-//        HuffmanTreeDemo demo = new HuffmanTreeDemo();
-//        int weight[] = {1, 3, 6, 9};
-//        HTNode[] huffmanTree = new HTNode[2 * weight.length - 1];
-//        demo.createHuffmanTree(huffmanTree, weight);
-//        for (int i = 0; i < huffmanTree.length; i++) {
-//            System.out.println(huffmanTree[i].getWeight());
-//        }
-//        List<String> huffmanCode = new ArrayList<>();
-//        demo.createHuffmanCode(huffmanTree, huffmanCode,weight.length);
-//        for (String code : huffmanCode) {
-//            System.out.println(code);
-//        }
+        HuffmanTreeDemo demo = new HuffmanTreeDemo();
+        int weight[] = {1, 3, 6, 9};
+        HTNode[] huffmanTree = new HTNode[2 * weight.length - 1];
+        demo.createHuffmanTree(huffmanTree, weight);
+        for (int i = 0; i < huffmanTree.length; i++) {
+            System.out.println(huffmanTree[i].getWeight());
+        }
+        List<String> huffmanCode = new ArrayList<>();
+        demo.createHuffmanCode(huffmanTree, huffmanCode,weight.length);
+        for (String code : huffmanCode) {
+            System.out.println(code);
+        }
     }
 
     private void createHuffmanTree(HTNode[] huffmanTree, int[] weight) {
