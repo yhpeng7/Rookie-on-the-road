@@ -33,7 +33,7 @@ void Print(TreeNode *T)
     }
 }
 
-/*层次遍历*/
+
 void HierarchyBiTree(TreeNode *T)
 {
     TreeNode *temp = T;
