@@ -14,17 +14,21 @@ public class GraphDemo {
 
         adjListGraph adjListGraph = new adjListGraph();
 
-//        createAdjMatrixGraph(adjMatrixGraph);
-//
-//        printAdjMatrixGraph(adjMatrixGraph);
+        createAdjMatrixGraph(adjMatrixGraph);
 
-        createAdjListGraph(adjListGraph);
+        printAdjMatrixGraph(adjMatrixGraph);
 
-        printAdjListGraph(adjListGraph);
+        DFS(adjMatrixGraph);
+
+        BFS(adjMatrixGraph);
+
+//        createAdjListGraph(adjListGraph);
+
+//        printAdjListGraph(adjListGraph);
 
 //        DFS(adjListGraph);
 
-        BFS(adjListGraph);
+//        BFS(adjListGraph);
     }
 
     /**
@@ -52,6 +56,27 @@ public class GraphDemo {
     }
 
     public static void DFS(adjListGraph G) {
+        initVisited();
+        for (int i = 0; i < G.numVertexes; i++) {
+            if (visited[i] != 1) {
+                DFS(G, i);
+            }
+        }
+    }
+
+    public static void DFS(adjMatrixGraph G,int v) {
+        edgeNode p;
+        visited[v] = 1;
+        System.out.println(G.vexs[v]);
+        for (int j = 0; j < G.numVertexes; j++) {
+            if (G.arc[v][j] == 1 && visited[j] != 1) {
+                DFS(G,j);
+            }
+        }
+    }
+
+    public static void DFS(adjMatrixGraph G) {
+        initVisited();
         for (int i = 0; i < G.numVertexes; i++) {
             if (visited[i] != 1) {
                 DFS(G, i);
@@ -79,6 +104,7 @@ public class GraphDemo {
         edgeNode p;
         ArrayDeque<Integer> Q = new ArrayDeque();
 
+        initVisited();
         for (int i = 0,v; i < G.numVertexes; i++) {
             if (visited[i] != 1) {
                 //访问顶点v并入队列
@@ -101,7 +127,36 @@ public class GraphDemo {
         }
     }
 
-    private static void createAdjMatrixGraph(adjMatrixGraph G) {
+    public static void BFS(adjMatrixGraph G) {
+        ArrayDeque<Integer> Q = new ArrayDeque<>();
+
+        initVisited();
+        for (int i = 0,v; i < G.numVertexes; i++) {
+            if (visited[i] != 1) {
+                System.out.println(G.vexs[i]);
+                visited[i] = 1;
+                Q.add(i);
+                while (!Q.isEmpty()) {
+                    v = Q.remove();
+                    for (int j = 0; j < G.numVertexes; j++) {
+                        if (G.arc[v][j] == 1 && visited[j] != 1) {
+                            System.out.println(G.vexs[j]);
+                            visited[j] = 1;
+                            Q.add(j);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public static void initVisited() {
+        for (int i = 0; i < visited.length; i++) {
+            visited[i] = 0;
+        }
+    }
+
+    public static void createAdjMatrixGraph(adjMatrixGraph G) {
         System.out.print("请输入图的顶点数和边数：");
         G.numVertexes = input.nextInt();
         G.numEdges = input.nextInt();
@@ -130,7 +185,7 @@ public class GraphDemo {
         }
     }
 
-    private static void printAdjMatrixGraph(adjMatrixGraph G) {
+    public static void printAdjMatrixGraph(adjMatrixGraph G) {
         System.out.println("您输入的邻接矩阵如下：");
         for (int i = 0; i < G.numVertexes; i++) {
             for (int j = 0; j < G.numVertexes; j++) {
@@ -157,7 +212,7 @@ public class GraphDemo {
         }
     }
 
-    private static void createAdjListGraph(adjListGraph G) {
+    public static void createAdjListGraph(adjListGraph G) {
 
         System.out.print("请输入图的顶点数和边数：");
         G.numVertexes = input.nextInt();
@@ -192,7 +247,7 @@ public class GraphDemo {
         }
     }
 
-    private static void printAdjListGraph(adjListGraph G) {
+    public static void printAdjListGraph(adjListGraph G) {
         edgeNode edge;
         System.out.println("您输入的临接表如下：");
         for (int i = 0; i < G.numVertexes; i++) {
