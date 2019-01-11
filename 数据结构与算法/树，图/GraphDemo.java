@@ -33,19 +33,19 @@ public class GraphDemo {
 
     /**
      * (1)访问顶点v,visited[v] = 1;
-     * (2)w = v 的下一个临接点;
-     * (3)while(w)存在{
-     *     if(w未被访问){
-     *         从顶点w出发递归执行该算法;
+     * (2)p = v 的下一个临接点;
+     * (3)while(p)存在{
+     *     if(p未被访问){
+     *         从顶点p出发递归执行该算法;
      *     }
-     *     w = 顶点v的下一个临接点;
+     *     p = 顶点v的下一个临接点;
      * }
      * @param G 邻接表
      */
     public static void DFS(adjListGraph G,int v) {
         edgeNode p;
-        visited[v] = 1;
         System.out.println(G.adjList[v].data);
+        visited[v] = 1;
         p = G.adjList[v].firstEdge;
         while (p != null) {
             if (visited[p.adjvex] != 1) {
@@ -89,13 +89,13 @@ public class GraphDemo {
      * (2)顶点v入队列;
      * (3)while(队列非空){
      *     v = 队列的首元素出队
-     *     w = 顶点v的第一个临接点
+     *     p = 顶点v的第一个临接点
      *     while(w存在){
-     *         if(w未访问){
-     *             访问顶点w,visited[w] = 1;
-     *             顶点w入队列
+     *         if(p未访问){
+     *             访问顶点w,visited[p] = 1;
+     *             顶点p入队列
      *         }
-     *         w = 顶点v的下一个临接点
+     *         p = 顶点v的下一个临接点
      *     }
      * }
      * @param G 邻接表

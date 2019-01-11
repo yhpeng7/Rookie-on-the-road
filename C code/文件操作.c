@@ -48,14 +48,3 @@ int main()
         printf("%lf",str2[1]);
         //puts(str2);
 }
-
-
-
-
-
-
-
-
-
-
-(1-2)*(4+5)
