@@ -1,19 +1,53 @@
 package Tree;
 
+import java.io.IOException;
 import java.util.ArrayDeque;
+import java.util.Scanner;
+
+class BiTNode {
+
+    Data data;
+
+    String peak;
+
+    BiTNode lChild;
+
+    BiTNode rChild;
+
+    public BiTNode(String peak) {
+        this.peak = peak;
+    }
+
+    public BiTNode(Data data) {
+        this.data = data;
+    }
+}
+
+class Data {
+
+    int id;
+
+    String name;
+
+    public Data(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+}
 
 public class BiTreeDemo {
 
+    private Scanner input = new Scanner(System.in);
+
     public static void main(String[] args) {
         BiTreeDemo demo = new BiTreeDemo();
-        BiTNode BiTree = new BiTNode(new Data(41, "鹏"));
+        BiTNode BiTree = new BiTNode(new Data(27, "鹏"));
 
         demo.TreeInsert(BiTree, new Data(20, "枣"));
         demo.TreeInsert(BiTree, new Data(11, "天"));
         demo.TreeInsert(BiTree, new Data(29, "王"));
-        demo.TreeInsert(BiTree, new Data(32, "楼"));
 
-//        demo.InOrderTraverse(BiTree);
+        demo.InOrderTraverse(BiTree);
 //        demo.levelOrder(BiTree);
     }
 

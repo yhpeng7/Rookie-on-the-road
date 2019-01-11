@@ -172,9 +172,9 @@ public final class HuffmanTreeDemo {
             }
             codeMap.put(huffmanTree[i].getCharNode().c, code.reverse().toString());
         }
-        int c;
-        while ((c = br.read()) != -1) {
-            bos.write(codeMap.get(c).getBytes());
+        int num;
+        while ((num = br.read()) != -1) {
+            bos.write(codeMap.get(num).getBytes());
         }
         bos.flush();
         bos.close();
