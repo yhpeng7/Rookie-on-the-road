@@ -48,7 +48,7 @@ struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
     return newhead;
 }
 
-//范例代码
+
 class Solution {
 public:
 ListNode *addTwoNumbers(ListNode *l1, ListNode *l2) {
