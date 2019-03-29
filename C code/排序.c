@@ -69,7 +69,42 @@ void QuickSort(int arr[],int left,int right)
     }
 }
 
-void Swap(int *a,int *b)
+/*归并排序*/
+//递归
+void merge(int *a, int start, int mid, int end) {
+	int *b = (int *)malloc((end - start + 1) * sizeof(int));
+	int i = start, j = mid + 1, k = 0;
+	while (i <= mid && j <= end) {
+		if (a[i] <= a[j]) {
+			b[k++] = a[i++];
+		} else {
+			b[k++] = a[j++];
+		}
+	}
+	while (i <= mid) {
+		b[k++] = a[i++];
+	}
+	while (j <= end) {
+		b[k++] = a[j++];
+	}
+	for (i = 0; i < k; i++) {
+		a[start + i] = b[i];
+	}
+	free(b);
+}
+
+void mergeSort(int *a,int left,int right) {
+	if (left < right) {
+		int mid = (left + right) >> 1;
+		mergeSort(a, left, mid);
+		mergeSort(a, mid + 1,right);
+		merge(a, left, mid, right);
+	}
+}
+//非递归
+
+
+void Swap(const void *a,const void *b)
 {
     int temp;
     temp = *a;
