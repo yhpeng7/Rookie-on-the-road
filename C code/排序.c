@@ -2,6 +2,20 @@
 #include <stdlib.h>
 #include <string.h>
 
+/*冒泡排序*/
+void bubbleSort(int *a,int arrlen) {
+	bool flag = true;
+	for (int i = 0; i < arrlen - 1 && flag; i++) {
+		flag = false;
+		for (int j = 0;j < arrlen -i - 1; j++) {
+			if (a[j] > a[j + 1]) {
+				swap(&a[j], &a[j + 1]);
+				flag = true;
+			}
+		}
+	}
+}
+
 /*直接插入排序*/
 void StrInsert(int arr[],int arrlen)
 {
@@ -70,7 +84,6 @@ void QuickSort(int arr[],int left,int right)
 }
 
 /*归并排序*/
-//递归
 void merge(int *a, int start, int mid, int end) {
 	int *b = (int *)malloc((end - start + 1) * sizeof(int));
 	int i = start, j = mid + 1, k = 0;
@@ -92,7 +105,7 @@ void merge(int *a, int start, int mid, int end) {
 	}
 	free(b);
 }
-
+//递归
 void mergeSort(int *a,int left,int right) {
 	if (left < right) {
 		int mid = (left + right) >> 1;
@@ -102,6 +115,19 @@ void mergeSort(int *a,int left,int right) {
 	}
 }
 //非递归
+void mergeSort2(int *a,int arrlen) {
+	for (int i,s = 1; s < arrlen; s += s) {
+		for (i = 0; i <= arrlen - 2 * s;i += 2 * s) {
+			//合并大小为s的相邻两段数组
+			merge(a, i, i + s - 1, i + 2 * s - 1);
+		}
+		//若剩余元素为“一组半”继续合并，不足一组则剩余元素不动直接进入下一轮归并
+		if (i + s < arrlen) {
+			merge(a, i, i + s - 1, arrlen - 1);
+		}
+	}
+}
+//自然合并排序
 
 
 void Swap(const void *a,const void *b)
