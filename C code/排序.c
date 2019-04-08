@@ -121,7 +121,7 @@ void mergeSort2(int *a,int arrlen) {
 			//合并大小为s的相邻两段数组
 			merge(a, i, i + s - 1, i + 2 * s - 1);
 		}
-		//若剩余元素为“一组半”继续合并，不足一组则剩余元素不动直接进入下一轮归并
+		//剩余元素为“一组半”继续合并，一组或不足一组则不动直接进入下一轮归并
 		if (i + s < arrlen) {
 			merge(a, i, i + s - 1, arrlen - 1);
 		}
