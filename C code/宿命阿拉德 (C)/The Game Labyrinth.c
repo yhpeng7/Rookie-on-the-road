@@ -1,9 +1,9 @@
-#include "Head.h"
+ï»¿#include "Head.h"
 
-/*********************  À´Ô´£ºCSDN Àî°Øºâ *********************/
+/*********************  æ¥æºï¼šCSDN ææŸè¡¡ *********************/
 
-#define Height 25 //ÃÔ¹¬µÄ¸ß¶È£¬±ØĞëÎªÆæÊı
-#define Width 25 //ÃÔ¹¬µÄ¿í¶È£¬±ØĞëÎªÆæÊı
+#define Height 25 //è¿·å®«çš„é«˜åº¦ï¼Œå¿…é¡»ä¸ºå¥‡æ•°
+#define Width 25 //è¿·å®«çš„å®½åº¦ï¼Œå¿…é¡»ä¸ºå¥‡æ•°
 #define Wall 1
 #define Road 0
 #define Start 2
@@ -13,155 +13,142 @@
 #define Down 2
 #define Left 3
 #define Right 4
-int map[Height+2][Width+2];
-void gotoxy(int x,int y) //ÒÆ¶¯×ø±ê
+int map[Height + 2][Width + 2];
+void gotoxy(int x, int y) //ç§»åŠ¨åæ ‡
 {
-    COORD coord;
-    coord.X=x;
-    coord.Y=y;
-    SetConsoleCursorPosition( GetStdHandle( STD_OUTPUT_HANDLE ), coord );
+	COORD coord;
+	coord.X = x;
+	coord.Y = y;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
-void hidden()//Òş²Ø¹â±ê
+void hidden()//éšè—å…‰æ ‡
 {
-    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-    CONSOLE_CURSOR_INFO cci;
-    GetConsoleCursorInfo(hOut,&cci);
-    cci.bVisible=0;//¸³1ÎªÏÔÊ¾£¬¸³0ÎªÒş²Ø
-    SetConsoleCursorInfo(hOut,&cci);
+	HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_CURSOR_INFO cci;
+	GetConsoleCursorInfo(hOut, &cci);
+	cci.bVisible = 0;//èµ‹1ä¸ºæ˜¾ç¤ºï¼Œèµ‹0ä¸ºéšè—
+	SetConsoleCursorInfo(hOut, &cci);
 }
-void create(int x,int y) //Ëæ»úÉú³ÉÃÔ¹¬
+void create(int x, int y) //éšæœºç”Ÿæˆè¿·å®«
 {
-    int c[4][2]={0,1,1,0,0,-1,-1,0}; //ËÄ¸ö·½Ïò
-    int i,j,t;
-        //½«·½Ïò´òÂÒ
-    for(i=0;i<4;i++)
-    {
-        j=rand()%4;
-        t=c[i][0];c[i][0]=c[j][0];c[j][0]=t;
-        t=c[i][1];c[i][1]=c[j][1];c[j][1]=t;
-    }
-    map[x][y]=Road;
-    for(i=0;i<4;i++)
-    if(map[x+2*c[i][0]][y+2*c[i][1]]==Wall)
-    {
-        map[x+c[i][0]][y+c[i][1]]=Road;
-        create(x+2*c[i][0],y+2*c[i][1]);
-    }
+	int c[4][2] = { 0,1,1,0,0,-1,-1,0 }; //å››ä¸ªæ–¹å‘
+	int i, j, t;
+	//å°†æ–¹å‘æ‰“ä¹±
+	for (i = 0; i < 4; i++) {
+		j = rand() % 4;
+		t = c[i][0]; c[i][0] = c[j][0]; c[j][0] = t;
+		t = c[i][1]; c[i][1] = c[j][1]; c[j][1] = t;
+	}
+	map[x][y] = Road;
+	for (i = 0; i < 4; i++)
+		if (map[x + 2 * c[i][0]][y + 2 * c[i][1]] == Wall) {
+			map[x + c[i][0]][y + c[i][1]] = Road;
+			create(x + 2 * c[i][0], y + 2 * c[i][1]);
+		}
 }
-int get_key() //½ÓÊÕ°´¼ü
+int get_key() //æ¥æ”¶æŒ‰é”®
 {
-    char c;
-    while(c=getch())
-    {
-        if(c==27) return Esc; //Esc
-        if(c!=-32)continue;
-        c=getch();
-        if(c==72) return Up; //ÉÏ
-        if(c==80) return Down; //ÏÂ
-        if(c==75) return Left; //×ó
-        if(c==77) return Right; //ÓÒ
-    }
-    return 0;
+	char c;
+	while (c = getch()) {
+		if (c == 27) return Esc; //Esc
+		if (c != -32)continue;
+		c = getch();
+		if (c == 72) return Up; //ä¸Š
+		if (c == 80) return Down; //ä¸‹
+		if (c == 75) return Left; //å·¦
+		if (c == 77) return Right; //å³
+	}
+	return 0;
 }
-void paint(int x,int y) //»­ÃÔ¹¬
+void paint(int x, int y) //ç”»è¿·å®«
 {
-    gotoxy(2*y-2,x-1);
-    switch(map[x][y])
-    {
-        case Start:
-        printf("Èë");break; //»­Èë¿Ú
-        case End:
-        printf("³ö");break; //»­³ö¿Ú
-        case Wall:
-        printf("¨~");break; //»­Ç½
-        case Road:
-        printf(" ");break; //»­Â·
-    }
+	gotoxy(2 * y - 2, x - 1);
+	switch (map[x][y]) {
+		case Start:
+			printf("å…¥"); break; //ç”»å…¥å£
+		case End:
+			printf("å‡º"); break; //ç”»å‡ºå£
+		case Wall:
+			printf("â–‡"); break; //ç”»å¢™
+		case Road:
+			printf(" "); break; //ç”»è·¯
+	}
 }
-void game()
-{
-    int x=2,y=1; //Íæ¼Òµ±Ç°Î»ÖÃ£¬¸Õ¿ªÊ¼ÔÚÈë¿Ú´¦
-    int c; //ÓÃÀ´½ÓÊÕ°´¼ü
-    while(1)
-    {
-        gotoxy(2*y-2,x-1);
-        printf("¡ñ"); //»­³öÍæ¼Òµ±Ç°Î»ÖÃ
-        if(map[x][y]==End) //ÅĞ¶ÏÊÇ·ñµ½´ï³ö¿Ú
-        {
-            gotoxy(30,24);
-            printf("µ½´ïÖÕµã£¬°´ÈÎÒâ¼ü½áÊø");
-            getch();
-            break;
-        }
-        c=get_key();
-        if(c==Esc)
-        {
-            gotoxy(0,24);
-            break;
-        }
-        switch(c)
-        {
-                case Up: //ÏòÉÏ×ß
-                if(map[x-1][y]!=Wall)
-                {
-                    paint(x,y);
-                    x--;
-                }
-            break;
-            case Down: //ÏòÏÂ×ß
-            if(map[x+1][y]!=Wall)
-            {
-                paint(x,y);
-                x++;
-            }
-            break;
-            case Left: //Ïò×ó×ß
-            if(map[x][y-1]!=Wall)
-            {
-                paint(x,y);
-                y--;
-            }
-            break;
-            case Right: //ÏòÓÒ×ß
-            if(map[x][y+1]!=Wall)
-            {
-                paint(x,y);
-                y++;
-            }
-            break;
-        }
-    }
+void game() {
+	int x = 2, y = 1; //ç©å®¶å½“å‰ä½ç½®ï¼Œåˆšå¼€å§‹åœ¨å…¥å£å¤„
+	int c; //ç”¨æ¥æ¥æ”¶æŒ‰é”®
+	while (1) {
+		gotoxy(2 * y - 2, x - 1);
+		printf("â—"); //ç”»å‡ºç©å®¶å½“å‰ä½ç½®
+		if (map[x][y] == End) //åˆ¤æ–­æ˜¯å¦åˆ°è¾¾å‡ºå£
+		{
+			gotoxy(30, 24);
+			printf("åˆ°è¾¾ç»ˆç‚¹ï¼ŒæŒ‰ä»»æ„é”®ç»“æŸ");
+			getch();
+			break;
+		}
+		c = get_key();
+		if (c == Esc) {
+			gotoxy(0, 24);
+			break;
+		}
+		switch (c) {
+			case Up: //å‘ä¸Šèµ°
+				if (map[x - 1][y] != Wall) {
+					paint(x, y);
+					x--;
+				}
+				break;
+			case Down: //å‘ä¸‹èµ°
+				if (map[x + 1][y] != Wall) {
+					paint(x, y);
+					x++;
+				}
+				break;
+			case Left: //å‘å·¦èµ°
+				if (map[x][y - 1] != Wall) {
+					paint(x, y);
+					y--;
+				}
+				break;
+			case Right: //å‘å³èµ°
+				if (map[x][y + 1] != Wall) {
+					paint(x, y);
+					y++;
+				}
+				break;
+		}
+	}
 }
-int GameLabyrinth(void)
-{
-    system("title yourname");
-    int i,j;
-    srand((unsigned)time(NULL)); //³õÊ¼»¯Ëæ¼´ÖÖ×Ó
-    hidden(); //Òş²Ø¹â±ê
-    for(i=0;i<=Height+1;i++)
-    for(j=0;j<=Width+1;j++)
-    if(i==0||i==Height+1||j==0||j==Width+1) //³õÊ¼»¯ÃÔ¹¬
-    map[i][j]=Road;
-    else map[i][j]=Wall;
+int GameLabyrinth(void) {
+	system("title yourname");
+	int i, j;
+	srand((unsigned)time(NULL)); //åˆå§‹åŒ–éšå³ç§å­
+	hidden(); //éšè—å…‰æ ‡
+	for (i = 0; i <= Height + 1; i++)
+		for (j = 0; j <= Width + 1; j++)
+			if (i == 0 || i == Height + 1 || j == 0 || j == Width + 1) //åˆå§‹åŒ–è¿·å®«
+				map[i][j] = Road;
+			else map[i][j] = Wall;
 
-    create(2*(rand()%(Height/2)+1),2*(rand()%(Width/2)+1)); //´ÓËæ»úÒ»¸öµã¿ªÊ¼Éú³ÉÃÔ¹¬£¬¸ÃµãĞĞÁĞ¶¼ÎªÅ¼Êı
-    for(i=0;i<=Height+1;i++) //±ß½ç´¦Àí
-    {
-        map[i][0]=Wall;
-        map[i][Width+1]=Wall;
-    }
+	create(2 * (rand() % (Height / 2) + 1), 2 * (rand() % (Width / 2) + 1)); //ä»éšæœºä¸€ä¸ªç‚¹å¼€å§‹ç”Ÿæˆè¿·å®«ï¼Œè¯¥ç‚¹è¡Œåˆ—éƒ½ä¸ºå¶æ•°
+	for (i = 0; i <= Height + 1; i++) //è¾¹ç•Œå¤„ç†
+	{
+		map[i][0] = Wall;
+		map[i][Width + 1] = Wall;
+	}
 
-    for(j=0;j<=Width+1;j++) //±ß½ç´¦Àí
-    {
-        map[0][j]=Wall;
-        map[Height+1][j]=Wall;
-    }
-    map[2][1]=Start; //¸ø¶¨Èë¿Ú
-    map[Height-1][Width]=End; //¸ø¶¨³ö¿Ú
-    for(i=1;i<=Height;i++)
-    for(j=1;j<=Width;j++) //»­³öÃÔ¹¬
-    paint(i,j);
-    game(); //¿ªÊ¼ÓÎÏ·
-    getch();
-    return 0;
+	for (j = 0; j <= Width + 1; j++) //è¾¹ç•Œå¤„ç†
+	{
+		map[0][j] = Wall;
+		map[Height + 1][j] = Wall;
+	}
+	map[2][1] = Start; //ç»™å®šå…¥å£
+	map[Height - 1][Width] = End; //ç»™å®šå‡ºå£
+	for (i = 1; i <= Height; i++)
+		for (j = 1; j <= Width; j++) //ç”»å‡ºè¿·å®«
+			paint(i, j);
+	game(); //å¼€å§‹æ¸¸æˆ
+	getch();
+	return 0;
 }

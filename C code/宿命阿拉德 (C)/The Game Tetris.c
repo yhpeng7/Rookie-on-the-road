@@ -1,210 +1,198 @@
-#include "Head.h"
+ï»¿#include "Head.h"
 
-/*********************  À´Ô´£ºCSDN ¾®ÍÜ_t *********************/
+/*********************  æ¥æºï¼šCSDN äº•è›™_t *********************/
 
-#define FrameX 4   //´°¿Ú×óÉÏ½ÇµÄXÖá×ø±ê
-#define FrameY 4   //´°¿Ú×óÉÏ½ÇµÄYÖá×ø±ê
-#define Frame_height  20 //´°¿ÚµÄ¸ß¶È
-#define Frame_width   18 //´°¿ÚµÄ¿í¶È
-struct Tetris
-{
-	int x;  //ÖĞĞÄ·½¿éµÄxÖá×ø±ê
-	int y;  //ÖĞĞÄ·½¿éµÄyÖá×ø±ê
-	int flag;//±ê¼Ç·½¿éÀàĞÍºÅ
-	int next;//ÏÂÒ»¸ö¶íÂŞË¹·½¿éÀàĞÍµÄĞòºÅ
-	int speed;//¶íÂŞË¹·½¿éÒÆ¶¯µÄËÙ¶È
-	int count;//²úÉú¶íÂŞË¹·½¿éµÄ¸öÊı
-	int score;//ÓÎÏ·µÄ·ÖÊı
-	int level;//ÓÎÏ·µÄµÈ¼¶
+#define FrameX 4   //çª—å£å·¦ä¸Šè§’çš„Xè½´åæ ‡
+#define FrameY 4   //çª—å£å·¦ä¸Šè§’çš„Yè½´åæ ‡
+#define Frame_height  20 //çª—å£çš„é«˜åº¦
+#define Frame_width   18 //çª—å£çš„å®½åº¦
+struct Tetris {
+	int x;  //ä¸­å¿ƒæ–¹å—çš„xè½´åæ ‡
+	int y;  //ä¸­å¿ƒæ–¹å—çš„yè½´åæ ‡
+	int flag;//æ ‡è®°æ–¹å—ç±»å‹å·
+	int next;//ä¸‹ä¸€ä¸ªä¿„ç½—æ–¯æ–¹å—ç±»å‹çš„åºå·
+	int speed;//ä¿„ç½—æ–¯æ–¹å—ç§»åŠ¨çš„é€Ÿåº¦
+	int count;//äº§ç”Ÿä¿„ç½—æ–¯æ–¹å—çš„ä¸ªæ•°
+	int score;//æ¸¸æˆçš„åˆ†æ•°
+	int level;//æ¸¸æˆçš„ç­‰çº§
 };
-enum keyvalue
-{
+enum keyvalue {
 	ESC = 0x1b, LeftArrow = 0x4be0, RightArrow = 0x4de0, Blank = 0x20, DownArrow = 0x50e0
 };
-int i, j, k, temp, temp1, temp2;//temp1,temp2,temp3ÓÃÀ´¼Ç×¡ºÍ×ª»»·½¿é±äÁ¿µÄÖµ
-int a[100][100] = { 0 };//1´ú±í·½¿é£¬2´ú±í±ß½ç£¬0´ú±í¿Õ¸ñ
-int b[4];//¼ÇÂ¼ËÄ¸ö·½¿é
+int i, j, k, temp, temp1, temp2;//temp1,temp2,temp3ç”¨æ¥è®°ä½å’Œè½¬æ¢æ–¹å—å˜é‡çš„å€¼
+int a[100][100] = { 0 };//1ä»£è¡¨æ–¹å—ï¼Œ2ä»£è¡¨è¾¹ç•Œï¼Œ0ä»£è¡¨ç©ºæ ¼
+int b[4];//è®°å½•å››ä¸ªæ–¹å—
 struct Tetris *tetris;
-short int getkey()//¶¨Òå¹²ÓÃÌå£¬½ÓÊÜ¼üÅÌ°´¼ü
+short int getkey()//å®šä¹‰å…±ç”¨ä½“ï¼Œæ¥å—é”®ç›˜æŒ‰é”®
 {
-	union key
-	{
+	union key {
 		unsigned short int value;
 		unsigned char ch[2];
 	} key1;
 	key1.value = 0;
-	if (kbhit())
-	{
+	if (kbhit()) {
 		key1.ch[0] = getch();
 		if (kbhit())
 			key1.ch[1] = getch();
 	}
 	return key1.value;
 }
-void Gotoxy(int x, int y)   //½«¹â±êÒÆµ½µ½Ö¸Î»ÖÃ
+void Gotoxy(int x, int y)   //å°†å…‰æ ‡ç§»åˆ°åˆ°æŒ‡ä½ç½®
 {
 	COORD pos;
 	pos.X = x - 1;
 	pos.Y = y - 1;
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
-void Make_tetris() //ÖĞĞÄ·½¿éÎ»ÖÃ×ø±ê£¬1-ÓĞ£¬0-ÎŞ
+void Make_tetris() //ä¸­å¿ƒæ–¹å—ä½ç½®åæ ‡ï¼Œ1-æœ‰ï¼Œ0-æ— 
 {
 	a[tetris->x][tetris->y] = b[0];
-	switch (tetris->flag)
-	{
-	case 1:
-		a[tetris->x][tetris->y - 1] = b[1];    //¡ö¡ö
-		a[tetris->x + 2][tetris->y - 1] = b[2];//¡ö¡ö
-		a[tetris->x + 2][tetris->y] = b[3];    //
-		break;
-	case 2:
-		a[tetris->x - 2][tetris->y] = b[1];//
-		a[tetris->x + 2][tetris->y] = b[2];//¡ö¡ö¡ö¡ö
-		a[tetris->x + 4][tetris->y] = b[3];//
-		break;
-	case 3:
-		a[tetris->x][tetris->y - 1] = b[1];//¡ö
-		a[tetris->x][tetris->y - 2] = b[2];//¡ö
-		a[tetris->x][tetris->y + 1] = b[3];//¡ö
-		break;                             //¡ö
-	case 4:
-		a[tetris->x - 2][tetris->y] = b[1];//
-		a[tetris->x + 2][tetris->y] = b[2];//¡ö¡ö¡ö
-		a[tetris->x][tetris->y + 1] = b[3];//  ¡ö
-		break;
-	case 5:
-		a[tetris->x][tetris->y - 1] = b[1];//  ¡ö
-		a[tetris->x][tetris->y + 1] = b[2];//¡ö¡ö
-		a[tetris->x - 2][tetris->y] = b[3];//  ¡ö
-		break;
-	case 6:
-		a[tetris->x][tetris->y - 1] = b[1];//  ¡ö
-		a[tetris->x - 2][tetris->y] = b[2];//¡ö¡ö¡ö
-		a[tetris->x + 2][tetris->y] = b[3];//
-		break;
-	case 7:
-		a[tetris->x][tetris->y - 1] = b[1];//¡ö
-		a[tetris->x][tetris->y + 1] = b[2];//¡ö¡ö
-		a[tetris->x + 2][tetris->y] = b[3];//¡ö
-		break;
-	case 8:
-		a[tetris->x][tetris->y + 1] = b[1];    //
-		a[tetris->x - 2][tetris->y] = b[2];    //¡ö¡ö
-		a[tetris->x + 2][tetris->y + 1] = b[3];//  ¡ö¡ö
-		break;
-	case 9:
-		a[tetris->x][tetris->y - 1] = b[1];    //  ¡ö
-		a[tetris->x - 2][tetris->y] = b[2];    //¡ö¡ö
-		a[tetris->x - 2][tetris->y + 1] = b[3];//¡ö
-		break;
-	case 10:
-		a[tetris->x][tetris->y - 1] = b[1];    //¡ö¡ö
-		a[tetris->x - 2][tetris->y - 1] = b[2];//  ¡ö¡ö
-		a[tetris->x + 2][tetris->y] = b[3];    //
-		break;
-	case 11:
-		a[tetris->x][tetris->y + 1] = b[1];      //  ¡ö
-		a[tetris->x + 2][tetris->y - 1] = b[2];//¡ö¡ö
-		a[tetris->x + 2][tetris->y] = b[3];    //¡ö
-		break;
-	case 12:
-		a[tetris->x][tetris->y - 1] = b[1];  //¡ö¡ö
-		a[tetris->x][tetris->y + 1] = b[2];  //  ¡ö
-		a[tetris->x - 2][tetris->y - 1] = b[3];//  ¡ö
-		break;
-	case 13:
-		a[tetris->x - 2][tetris->y] = b[1];  //
-		a[tetris->x - 2][tetris->y + 1] = b[2];//¡ö¡ö¡ö
-		a[tetris->x + 2][tetris->y] = b[3];  //¡ö
-		break;
-	case 14:
-		a[tetris->x][tetris->y - 1] = b[1];  // ¡ö
-		a[tetris->x][tetris->y + 1] = b[2];  // ¡ö
-		a[tetris->x + 2][tetris->y + 1] = b[3];// ¡ö¡ö
-		break;
-	case 15:
-		a[tetris->x - 2][tetris->y] = b[1];    //
-		a[tetris->x + 2][tetris->y - 1] = b[2];//¡ö¡ö¡ö
-		a[tetris->x + 2][tetris->y] = b[3];    //    ¡ö
-		break;
-	case 16:
-		a[tetris->x][tetris->y + 1] = b[1];    //¡ö¡ö
-		a[tetris->x][tetris->y - 1] = b[2];    //¡ö
-		a[tetris->x + 2][tetris->y - 1] = b[3];//¡ö
-		break;
-	case 17:
-		a[tetris->x - 2][tetris->y] = b[1];    //¡ö
-		a[tetris->x - 2][tetris->y - 1] = b[2];//¡ö¡ö¡ö
-		a[tetris->x + 2][tetris->y] = b[3];    //
-		break;
-	case 18:
-		a[tetris->x][tetris->y - 1] = b[1];    //  ¡ö
-		a[tetris->x][tetris->y + 1] = b[2];    //  ¡ö
-		a[tetris->x - 2][tetris->y + 1] = b[3];//¡ö¡ö
-		break;
-	case 19:
-		a[tetris->x - 2][tetris->y] = b[1];    //
-		a[tetris->x + 2][tetris->y + 1] = b[2];//¡ö¡ö¡ö
-		a[tetris->x + 2][tetris->y] = b[3];    //    ¡ö
-		break;
+	switch (tetris->flag) {
+		case 1:
+			a[tetris->x][tetris->y - 1] = b[1];    //â– â– 
+			a[tetris->x + 2][tetris->y - 1] = b[2];//â– â– 
+			a[tetris->x + 2][tetris->y] = b[3];    //
+			break;
+		case 2:
+			a[tetris->x - 2][tetris->y] = b[1];//
+			a[tetris->x + 2][tetris->y] = b[2];//â– â– â– â– 
+			a[tetris->x + 4][tetris->y] = b[3];//
+			break;
+		case 3:
+			a[tetris->x][tetris->y - 1] = b[1];//â– 
+			a[tetris->x][tetris->y - 2] = b[2];//â– 
+			a[tetris->x][tetris->y + 1] = b[3];//â– 
+			break;                             //â– 
+		case 4:
+			a[tetris->x - 2][tetris->y] = b[1];//
+			a[tetris->x + 2][tetris->y] = b[2];//â– â– â– 
+			a[tetris->x][tetris->y + 1] = b[3];//  â– 
+			break;
+		case 5:
+			a[tetris->x][tetris->y - 1] = b[1];//  â– 
+			a[tetris->x][tetris->y + 1] = b[2];//â– â– 
+			a[tetris->x - 2][tetris->y] = b[3];//  â– 
+			break;
+		case 6:
+			a[tetris->x][tetris->y - 1] = b[1];//  â– 
+			a[tetris->x - 2][tetris->y] = b[2];//â– â– â– 
+			a[tetris->x + 2][tetris->y] = b[3];//
+			break;
+		case 7:
+			a[tetris->x][tetris->y - 1] = b[1];//â– 
+			a[tetris->x][tetris->y + 1] = b[2];//â– â– 
+			a[tetris->x + 2][tetris->y] = b[3];//â– 
+			break;
+		case 8:
+			a[tetris->x][tetris->y + 1] = b[1];    //
+			a[tetris->x - 2][tetris->y] = b[2];    //â– â– 
+			a[tetris->x + 2][tetris->y + 1] = b[3];//  â– â– 
+			break;
+		case 9:
+			a[tetris->x][tetris->y - 1] = b[1];    //  â– 
+			a[tetris->x - 2][tetris->y] = b[2];    //â– â– 
+			a[tetris->x - 2][tetris->y + 1] = b[3];//â– 
+			break;
+		case 10:
+			a[tetris->x][tetris->y - 1] = b[1];    //â– â– 
+			a[tetris->x - 2][tetris->y - 1] = b[2];//  â– â– 
+			a[tetris->x + 2][tetris->y] = b[3];    //
+			break;
+		case 11:
+			a[tetris->x][tetris->y + 1] = b[1];      //  â– 
+			a[tetris->x + 2][tetris->y - 1] = b[2];//â– â– 
+			a[tetris->x + 2][tetris->y] = b[3];    //â– 
+			break;
+		case 12:
+			a[tetris->x][tetris->y - 1] = b[1];  //â– â– 
+			a[tetris->x][tetris->y + 1] = b[2];  //  â– 
+			a[tetris->x - 2][tetris->y - 1] = b[3];//  â– 
+			break;
+		case 13:
+			a[tetris->x - 2][tetris->y] = b[1];  //
+			a[tetris->x - 2][tetris->y + 1] = b[2];//â– â– â– 
+			a[tetris->x + 2][tetris->y] = b[3];  //â– 
+			break;
+		case 14:
+			a[tetris->x][tetris->y - 1] = b[1];  // â– 
+			a[tetris->x][tetris->y + 1] = b[2];  // â– 
+			a[tetris->x + 2][tetris->y + 1] = b[3];// â– â– 
+			break;
+		case 15:
+			a[tetris->x - 2][tetris->y] = b[1];    //
+			a[tetris->x + 2][tetris->y - 1] = b[2];//â– â– â– 
+			a[tetris->x + 2][tetris->y] = b[3];    //    â– 
+			break;
+		case 16:
+			a[tetris->x][tetris->y + 1] = b[1];    //â– â– 
+			a[tetris->x][tetris->y - 1] = b[2];    //â– 
+			a[tetris->x + 2][tetris->y - 1] = b[3];//â– 
+			break;
+		case 17:
+			a[tetris->x - 2][tetris->y] = b[1];    //â– 
+			a[tetris->x - 2][tetris->y - 1] = b[2];//â– â– â– 
+			a[tetris->x + 2][tetris->y] = b[3];    //
+			break;
+		case 18:
+			a[tetris->x][tetris->y - 1] = b[1];    //  â– 
+			a[tetris->x][tetris->y + 1] = b[2];    //  â– 
+			a[tetris->x - 2][tetris->y + 1] = b[3];//â– â– 
+			break;
+		case 19:
+			a[tetris->x - 2][tetris->y] = b[1];    //
+			a[tetris->x + 2][tetris->y + 1] = b[2];//â– â– â– 
+			a[tetris->x + 2][tetris->y] = b[3];    //    â– 
+			break;
 	}
 }
-//ÖÆ×÷ÓÎÏ·´°¿Ú
-void Make_Frame()
-{
+//åˆ¶ä½œæ¸¸æˆçª—å£
+void Make_Frame() {
 	Gotoxy(FrameX + Frame_width - 5, FrameY - 2);
-	printf("¶íÂŞË¹·½¿é");
+	printf("ä¿„ç½—æ–¯æ–¹å—");
 	Gotoxy(FrameX, FrameY);
 	a[FrameX][FrameY] = 2;
-	printf("¨X");                          //´°¿ÚËÄÖÜ
-	for (i = 2; i < 2 * Frame_width - 2; i += 2)
-	{
-		printf("¨T");                      //´òÓ¡ÉÏºá¿ò
+	printf("â•”");                          //çª—å£å››å‘¨
+	for (i = 2; i < 2 * Frame_width - 2; i += 2) {
+		printf("â•");                      //æ‰“å°ä¸Šæ¨ªæ¡†
 	}
-	printf("¨[");
+	printf("â•—");
 	a[FrameX + 2 * Frame_width - 2][FrameY + Frame_height] = 2;
-	for (i = 1; i < Frame_height; i++)
-	{
+	for (i = 1; i < Frame_height; i++) {
 		Gotoxy(FrameX, FrameY + i);
-		printf("¨U");                      //´òÓ¡×óÊú¿ò
-		a[FrameX][FrameY + i] = 2;         //¼Ç×¡×óÊú¿òÓĞÍ¼°¸
+		printf("â•‘");                      //æ‰“å°å·¦ç«–æ¡†
+		a[FrameX][FrameY + i] = 2;         //è®°ä½å·¦ç«–æ¡†æœ‰å›¾æ¡ˆ
 	}
 	Gotoxy(FrameX, FrameY + Frame_height);
-	printf("¨^");
+	printf("â•š");
 	a[FrameX][FrameY + Frame_height] = 2;
-	for (i = 1; i < Frame_height; i++)
-	{
+	for (i = 1; i < Frame_height; i++) {
 		Gotoxy(FrameX + 2 * Frame_width - 2, FrameY + i);
-		printf("¨U");                        //´òÓ¡ÓÒºá¿ò
-		a[FrameX + 2 * Frame_width - 2][FrameY + i] = 2;//¼Ç×¡ÓÒÊú¿òÓĞÍ¼°¸
+		printf("â•‘");                        //æ‰“å°å³æ¨ªæ¡†
+		a[FrameX + 2 * Frame_width - 2][FrameY + i] = 2;//è®°ä½å³ç«–æ¡†æœ‰å›¾æ¡ˆ
 	}
 	Gotoxy(FrameX + 2, FrameY + Frame_height);
-	for (i = 2; i<2 * Frame_width - 2; i += 2)
-	{
-		printf("¨T");                        //´òÓ¡ÏÂºá¿ò
-		a[FrameX + i][FrameY + Frame_height] = 2;//¼Ç×¡ÏÂºá¿òÓĞÍ¼°¸
+	for (i = 2; i < 2 * Frame_width - 2; i += 2) {
+		printf("â•");                        //æ‰“å°ä¸‹æ¨ªæ¡†
+		a[FrameX + i][FrameY + Frame_height] = 2;//è®°ä½ä¸‹æ¨ªæ¡†æœ‰å›¾æ¡ˆ
 	}
-	printf("¨a");
-	Gotoxy(FrameX + 2 * Frame_width + 3, FrameY + 7);   //´òÓ¡²Ëµ¥
-	printf("**********ÏÂÒ»¸ö·½¿é");
+	printf("â•");
+	Gotoxy(FrameX + 2 * Frame_width + 3, FrameY + 7);   //æ‰“å°èœå•
+	printf("**********ä¸‹ä¸€ä¸ªæ–¹å—");
 	Gotoxy(FrameX + 2 * Frame_width + 3, FrameY + 13);
 	printf("**********");
 	Gotoxy(FrameX + 2 * Frame_width + 3, FrameY + 15);
-	printf("¿Õ¸ñ¼ü£º±äÌå");
+	printf("ç©ºæ ¼é”®ï¼šå˜ä½“");
 	Gotoxy(FrameX + 2 * Frame_width + 3, FrameY + 17);
-	printf("¡û¼ü£º×óÒÆ");
+	printf("â†é”®ï¼šå·¦ç§»");
 	Gotoxy(FrameX + 2 * Frame_width + 3, FrameY + 19);
-	printf("¡ú¼ü£ºÓÒÒÆ");
+	printf("â†’é”®ï¼šå³ç§»");
 }
-//ÅĞ¶Ï·½¿éÊÇ·ñ¿ÉÒÔÒÆ¶¯
-bool Movable()
-{
-	if (a[tetris->x][tetris->y] != 0) //µ±ÖĞĞÄ·½¿éÎ»ÖÃÉÏÓĞÍ¼°¸Ê±£¬·µ»Øfalse£¬¼´²»¿ÉÒÆ¶¯
+//åˆ¤æ–­æ–¹å—æ˜¯å¦å¯ä»¥ç§»åŠ¨
+bool Movable() {
+	if (a[tetris->x][tetris->y] != 0) //å½“ä¸­å¿ƒæ–¹å—ä½ç½®ä¸Šæœ‰å›¾æ¡ˆæ—¶ï¼Œè¿”å›falseï¼Œå³ä¸å¯ç§»åŠ¨
 		return false;
-	else
-	{
-		if (//µ±·½¿éµÄËÄ¸öÎ»ÖÃµÄÖµ¾ùÎª0£¬¼´ÎŞÍ¼°¸Ê±£¬¿ÉÒÆ¶¯
+	else {
+		if (//å½“æ–¹å—çš„å››ä¸ªä½ç½®çš„å€¼å‡ä¸º0ï¼Œå³æ— å›¾æ¡ˆæ—¶ï¼Œå¯ç§»åŠ¨
 			(tetris->flag == 1 && (a[tetris->x][tetris->y - 1] == 0 && a[tetris->x + 2][tetris->y - 1] == 0 &&
 				a[tetris->x + 2][tetris->y] == 0)) ||
 				(tetris->flag == 2 && (a[tetris->x - 2][tetris->y] == 0 && a[tetris->x + 2][tetris->y] == 0 &&
@@ -242,197 +230,167 @@ bool Movable()
 																				(tetris->flag == 18 && (a[tetris->x][tetris->y - 1] == 0 && a[tetris->x][tetris->y + 1] == 0 &&
 																					a[tetris->x - 2][tetris->y + 1] == 0)) ||
 																					(tetris->flag == 19 && (a[tetris->x - 2][tetris->y] == 0 && a[tetris->x + 2][tetris->y + 1] == 0 &&
-																						a[tetris->x + 2][tetris->y] == 0)))
-		{
+																						a[tetris->x + 2][tetris->y] == 0))) {
 			return true;
 		}
 	}
 	return false;
 }
-//Ëæ»ú²úÉú¶íÂŞË¹·½¿éÀàĞÍµÄĞòºÅ
-void Get_flag()
-{
-	tetris->count++; //¼Ç×¡²úÉú·½¿éµÄ¸öÊı
+//éšæœºäº§ç”Ÿä¿„ç½—æ–¯æ–¹å—ç±»å‹çš„åºå·
+void Get_flag() {
+	tetris->count++; //è®°ä½äº§ç”Ÿæ–¹å—çš„ä¸ªæ•°
 	srand((unsigned)time(NULL));
 	if (tetris->count == 1)
-		tetris->flag = rand() % 19 + 1;//¼Ç×¡µÚÒ»¸ö·½¿éµÄĞòºÅ
+		tetris->flag = rand() % 19 + 1;//è®°ä½ç¬¬ä¸€ä¸ªæ–¹å—çš„åºå·
 	srand((unsigned)time(NULL));
-	tetris->next = rand() % 19 + 1;//¼Ç×¡ÏÂÒ»¸ö·½¿éµÄĞòºÅ
+	tetris->next = rand() % 19 + 1;//è®°ä½ä¸‹ä¸€ä¸ªæ–¹å—çš„åºå·
 }
-//´òÓ¡¶íÂŞË¹·½¿é
-void Print_tetris()
-{
+//æ‰“å°ä¿„ç½—æ–¯æ–¹å—
+void Print_tetris() {
 	for (i = 0; i < 4; i++)
 		b[i] = 1;
 	Make_tetris();
-	for (i = tetris->x - 2; i <= tetris->x + 4; i += 2)
-	{
-		for (j = tetris->y - 2; j <= tetris->y + 1; j++)
-		{
-			if (a[i][j] == 1 && j > FrameY)
-			{
+	for (i = tetris->x - 2; i <= tetris->x + 4; i += 2) {
+		for (j = tetris->y - 2; j <= tetris->y + 1; j++) {
+			if (a[i][j] == 1 && j > FrameY) {
 				Gotoxy(i, j);
-				printf("¡ö");           ///ÓĞÎÊÌâ£¡£¡£¡
+				printf("â– ");           ///æœ‰é—®é¢˜ï¼ï¼ï¼
 			}
 		}
 	}
-	//´òÓ¡²Ëµ¥ĞÅÏ¢
+	//æ‰“å°èœå•ä¿¡æ¯
 	Gotoxy(FrameX + 2 * Frame_width + 3, FrameY + 1);
-	printf("level£º%d", tetris->level);
+	printf("levelï¼š%d", tetris->level);
 	Gotoxy(FrameX + 2 * Frame_width + 3, FrameY + 3);
-	printf("score£º%d", tetris->score);
+	printf("scoreï¼š%d", tetris->score);
 	Gotoxy(FrameX + 2 * Frame_width + 3, FrameY + 5);
-	printf("speed£º%dms", tetris->speed);
+	printf("speedï¼š%dms", tetris->speed);
 }
-//Çå³ı¶íÂŞË¹·½¿éµÄºÛ¼£
-void Clear_tetris()
-{
+//æ¸…é™¤ä¿„ç½—æ–¯æ–¹å—çš„ç—•è¿¹
+void Clear_tetris() {
 	for (i = 0; i < 4; i++)
 		b[i] = 0;
 	Make_tetris();
-	for (i = tetris->x - 2; i <= tetris->x + 4; i += 2)
-	{
-		for (j = tetris->y - 2; j <= tetris->y + 1; j++)
-		{
-			if (a[i][j] == 0 && j>FrameY)
-			{
+	for (i = tetris->x - 2; i <= tetris->x + 4; i += 2) {
+		for (j = tetris->y - 2; j <= tetris->y + 1; j++) {
+			if (a[i][j] == 0 && j > FrameY) {
 				Gotoxy(i, j);
 				printf("  ");
 			}
 		}
 	}
 }
-//ÅĞ¶ÏÊÇ·ñÂúĞĞ²¢É¾³ıÂúĞĞµÄ¶íÂŞË¹·½¿é
-void Del_full()
-{
+//åˆ¤æ–­æ˜¯å¦æ»¡è¡Œå¹¶åˆ é™¤æ»¡è¡Œçš„ä¿„ç½—æ–¯æ–¹å—
+void Del_full() {
 	int del_count = 0;
 
-	for (j = FrameY + Frame_height - 1; j >= FrameY + 1; j--)
-	{
-		k = 0;//ÓÃÓÚ¼ÇÂ¼Ä³ĞĞ·½¿éµÄ¸öÊı
-		for (i = FrameX + 2; i < FrameX + 2 * Frame_width - 2; i += 2)
-		{
-			if (a[i][j] == 1)
-			{
+	for (j = FrameY + Frame_height - 1; j >= FrameY + 1; j--) {
+		k = 0;//ç”¨äºè®°å½•æŸè¡Œæ–¹å—çš„ä¸ªæ•°
+		for (i = FrameX + 2; i < FrameX + 2 * Frame_width - 2; i += 2) {
+			if (a[i][j] == 1) {
 				k++;
-				if (k == Frame_width - 2)//¸ÃĞĞÒÑÂú
+				if (k == Frame_width - 2)//è¯¥è¡Œå·²æ»¡
 				{
-					for (k = FrameX + 2; k < FrameX + 2 * Frame_width - 2; k += 2)
-					{
+					for (k = FrameX + 2; k < FrameX + 2 * Frame_width - 2; k += 2) {
 						a[k][j] = 0;
 						Gotoxy(k, j);
 						printf("  ");
 						Sleep(1);
 					}
-					for (k = j - 1; k > FrameY; k--)
-					{
-						for (i = FrameX + 2; i < FrameX + 2 * Frame_width - 2; i += 2)
-						{
-							if (a[i][k] == 1)
-							{
+					for (k = j - 1; k > FrameY; k--) {
+						for (i = FrameX + 2; i < FrameX + 2 * Frame_width - 2; i += 2) {
+							if (a[i][k] == 1) {
 								a[i][k] = 0;
 								Gotoxy(i, k);
 								printf("  ");
 								a[i][k + 1] = i;
 								Gotoxy(i, k + 1);
-								printf("¡ö");
+								printf("â– ");
 							}
 						}
 					}
-					j++;//¡ù¡ù¡ù·½¿éÏÂÒÆºó£¬ÖØĞÂÅĞ¶ÏÉ¾³ıĞĞÊÇ·ñÂúĞĞ
-					del_count++;//¼ÇÂ¼É¾³ı·½¿éµÄĞĞÊı
+					j++;//â€»â€»â€»æ–¹å—ä¸‹ç§»åï¼Œé‡æ–°åˆ¤æ–­åˆ é™¤è¡Œæ˜¯å¦æ»¡è¡Œ
+					del_count++;//è®°å½•åˆ é™¤æ–¹å—çš„è¡Œæ•°
 				}
 			}
 		}
 	}
-	tetris->score += 10 * del_count;    //Ã»É¾³ıÒ»ĞĞ£¬µÃ10·Ö
-	if (del_count > 0 && tetris->score % 100 == 0)                //ÓĞÎÊÌâ£¡£¡£¡
+	tetris->score += 10 * del_count;    //æ²¡åˆ é™¤ä¸€è¡Œï¼Œå¾—10åˆ†
+	if (del_count > 0 && tetris->score % 100 == 0)                //æœ‰é—®é¢˜ï¼ï¼ï¼
 	{
-		tetris->speed -= 20;//Èç¹ûÀÛ¼ÆÏû³ı10ĞĞ£¬ËÙ¶È¼Ó¿ì20ms²¢ÉıÒ»¼¶
+		tetris->speed -= 20;//å¦‚æœç´¯è®¡æ¶ˆé™¤10è¡Œï¼Œé€Ÿåº¦åŠ å¿«20mså¹¶å‡ä¸€çº§
 		tetris->level++;
 	}
 }
-//¿ªÊ¼ÓÎÏ·
-void Start_game()
-{
+//å¼€å§‹æ¸¸æˆ
+void Start_game() {
 	tetris = (struct Tetris*)malloc(sizeof(struct Tetris));
-	int key = 0;//¼üÅÌ°´¼ü
+	int key = 0;//é”®ç›˜æŒ‰é”®
 	key = getkey();
-	tetris->count = 0;//³õÊ¼»¯¶íÂŞË¹·½¿éÊıÎª0¸ö
-	tetris->speed = 300;//³õÊ¼ÒÆ¶¯ËÙ¶ÈÎª300ms
-	tetris->score = 0;//³õÊ¼ÓÎÏ··ÖÊıÎª0·Ö
-	tetris->level = 1;//³õÊ¼ÓÎÏ·¹ØÎªµÚ1¹Ø
-	while (1)//Ñ­»·²úÉú·½¿é£¬Ö±ÖÁÓÎÏ·½áÊø
+	tetris->count = 0;//åˆå§‹åŒ–ä¿„ç½—æ–¯æ–¹å—æ•°ä¸º0ä¸ª
+	tetris->speed = 300;//åˆå§‹ç§»åŠ¨é€Ÿåº¦ä¸º300ms
+	tetris->score = 0;//åˆå§‹æ¸¸æˆåˆ†æ•°ä¸º0åˆ†
+	tetris->level = 1;//åˆå§‹æ¸¸æˆå…³ä¸ºç¬¬1å…³
+	while (1)//å¾ªç¯äº§ç”Ÿæ–¹å—ï¼Œç›´è‡³æ¸¸æˆç»“æŸ
 	{
 		Get_flag();
 		temp = tetris->flag;
-		//´òÓ¡ÏÂÒ»¸ö¶íÂŞË¹·½¿éµÄÍ¼ĞÎ£¨ÓÒ´°¿Ú£©
+		//æ‰“å°ä¸‹ä¸€ä¸ªä¿„ç½—æ–¯æ–¹å—çš„å›¾å½¢ï¼ˆå³çª—å£ï¼‰
 		tetris->x = FrameX + 2 * Frame_width + 6;
 		tetris->y = FrameY + 10;
 		tetris->flag = tetris->next;
 		Print_tetris();
-		tetris->x = FrameX + Frame_width;//³õÊ¼ÖĞĞÄ·½¿éx×ø±ê
+		tetris->x = FrameX + Frame_width;//åˆå§‹ä¸­å¿ƒæ–¹å—xåæ ‡
 		tetris->y = FrameY - 1;
-		tetris->flag = temp; //È¡³öµ±Ç°µÄ¶íÂŞË¹·½¿éĞòºÅ
-		while (1)//¿ØÖÆ·½¿é·½Ïò£¬Ö±ÖÁ·½¿é²»ÔÙÏÂÒÆ
+		tetris->flag = temp; //å–å‡ºå½“å‰çš„ä¿„ç½—æ–¯æ–¹å—åºå·
+		while (1)//æ§åˆ¶æ–¹å—æ–¹å‘ï¼Œç›´è‡³æ–¹å—ä¸å†ä¸‹ç§»
 		{
 			Print_tetris();
 			Sleep(tetris->speed);
 			Clear_tetris();
-			temp1 = tetris->x;//¼Ç×¡ÖĞĞÄ·½¿éµÄºá×ø±ê
-			temp2 = tetris->flag;//¼Ç×¡µ±Ç°¶íÂŞË¹·½¿éĞòºÅ
-			if (kbhit())
-			{
+			temp1 = tetris->x;//è®°ä½ä¸­å¿ƒæ–¹å—çš„æ¨ªåæ ‡
+			temp2 = tetris->flag;//è®°ä½å½“å‰ä¿„ç½—æ–¯æ–¹å—åºå·
+			if (kbhit()) {
 				key = getkey();
-				switch (key)
-				{
-				case LeftArrow:
-					tetris->x -= 2;//ÖĞĞÄºá×ø±ê-2
-					break;
-				case RightArrow:
-					tetris->x += 2;//ÖĞĞÄºá×ø±ê+2
-					break;
-				case Blank://Ğı×ª
-					if (tetris->flag == 2 || tetris->flag == 3)
-					{
-						tetris->flag++;
-						tetris->flag %= 2;
-						tetris->flag += 2;
-					}
-					else if (tetris->flag >= 4 && tetris->flag <= 7)
-					{
-						tetris->flag++;
-						tetris->flag %= 4;
-						tetris->flag += 4;
-					}
-					else if (tetris->flag >= 8 && tetris->flag <= 11)
-					{
-						tetris->flag++;
-						tetris->flag %= 4;
-						tetris->flag += 8;
-					}
-					else if (tetris->flag >= 12 && tetris->flag <= 15)
-					{
-						tetris->flag++;
-						tetris->flag %= 4;
-						tetris->flag += 12;
-					}
-					else if (tetris->flag >= 16 && tetris->flag <= 19)
-					{
-						tetris->flag++;
-						tetris->flag %= 4;
-						tetris->flag += 16;
-					}
-					break;
+				switch (key) {
+					case LeftArrow:
+						tetris->x -= 2;//ä¸­å¿ƒæ¨ªåæ ‡-2
+						break;
+					case RightArrow:
+						tetris->x += 2;//ä¸­å¿ƒæ¨ªåæ ‡+2
+						break;
+					case Blank://æ—‹è½¬
+						if (tetris->flag == 2 || tetris->flag == 3) {
+							tetris->flag++;
+							tetris->flag %= 2;
+							tetris->flag += 2;
+						} else if (tetris->flag >= 4 && tetris->flag <= 7) {
+							tetris->flag++;
+							tetris->flag %= 4;
+							tetris->flag += 4;
+						} else if (tetris->flag >= 8 && tetris->flag <= 11) {
+							tetris->flag++;
+							tetris->flag %= 4;
+							tetris->flag += 8;
+						} else if (tetris->flag >= 12 && tetris->flag <= 15) {
+							tetris->flag++;
+							tetris->flag %= 4;
+							tetris->flag += 12;
+						} else if (tetris->flag >= 16 && tetris->flag <= 19) {
+							tetris->flag++;
+							tetris->flag %= 4;
+							tetris->flag += 16;
+						}
+						break;
 				}
-				if (!Movable())//Èç¹û²»¿ÉÒÆ¶¯£¬ÉÏÃæ²Ù×÷ÎŞĞ§
+				if (!Movable())//å¦‚æœä¸å¯ç§»åŠ¨ï¼Œä¸Šé¢æ“ä½œæ— æ•ˆ
 				{
 					tetris->x = temp1;
 					tetris->flag = temp2;
 				}
 			}
-			tetris->y++;//Èç¹ûÃ»ÓĞ²Ù×÷Ö¸Áî£¬·½¿éÏòÏÂÒÆ¶¯
-			if (!Movable())//Èç¹ûÏòÏÂÒÆ¶¯ÇÒ²»¿ÉÒÆ¶¯£¬·½¿é·ÅÔÚ´Ë´¦
+			tetris->y++;//å¦‚æœæ²¡æœ‰æ“ä½œæŒ‡ä»¤ï¼Œæ–¹å—å‘ä¸‹ç§»åŠ¨
+			if (!Movable())//å¦‚æœå‘ä¸‹ç§»åŠ¨ä¸”ä¸å¯ç§»åŠ¨ï¼Œæ–¹å—æ”¾åœ¨æ­¤å¤„
 			{
 				tetris->y--;
 				Print_tetris();
@@ -440,18 +398,15 @@ void Start_game()
 				break;
 			}
 		}
-		for (i = tetris->y - 2; i<tetris->y + 2; i++)
-		{
+		for (i = tetris->y - 2; i < tetris->y + 2; i++) {
 			if (i == FrameY)
-				j = 0;                             //ÓÎÏ·½áÊø
+				j = 0;                             //æ¸¸æˆç»“æŸ
 		}
-		if (j == 0)
-		{
-			for (j = 0; j<Frame_height + 1; j++)
-			{
+		if (j == 0) {
+			for (j = 0; j < Frame_height + 1; j++) {
 				Gotoxy(FrameX + 1, FrameY + j);
-				for (i = 1; i<Frame_width; i++)
-					printf("¡õ");
+				for (i = 1; i < Frame_width; i++)
+					printf("â–¡");
 			}
 			Gotoxy(FrameX + Frame_width - 4, FrameY + Frame_height / 2);
 			printf("GAME OVER!");
@@ -459,18 +414,17 @@ void Start_game()
 			getch();
 			break;
 		}
-		//Çå³ıÏÂÒ»¸ö¶íÂŞË¹·½¿éµÄÍ¼ĞÎ£¨ÓÒ´°¿Ú£©
+		//æ¸…é™¤ä¸‹ä¸€ä¸ªä¿„ç½—æ–¯æ–¹å—çš„å›¾å½¢ï¼ˆå³çª—å£ï¼‰
 		tetris->flag = tetris->next;
 		tetris->x = FrameX + 2 * Frame_width + 6;
 		tetris->y = FrameY + 10;
 		Clear_tetris();
 	}
 }
-int GameTetris(void)
-{
+int GameTetris(void) {
 	Make_Frame();
 	Start_game();
 	getch();
-	printf("°´ÈÎÒâ¼ü½áÊø...");
+	printf("æŒ‰ä»»æ„é”®ç»“æŸ...");
 	return 0;
 }

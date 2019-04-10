@@ -104,4 +104,8 @@
 
 12. [struct内存对齐](https://www.zhihu.com/question/27862634)
 
-13. 
+13. 计算机的文件存储在物理上都是二进制，文本文件和二进制文件之分，其实只是逻辑之分：C读写文本文件与二进制文件的差别仅仅体现在回车换行符，Windows下，文本文件：'\n' --- '\r\n'；二进制文件：'\n' --- '\n'（Linux下 不会对'\n'做隐式变换）。
+
+14. [C语言文件操作](https://www.cnblogs.com/likebeta/archive/2012/06/16/2551780.html)
+
+15. [EOF](http://www.ruanyifeng.com/blog/2011/11/eof.html)

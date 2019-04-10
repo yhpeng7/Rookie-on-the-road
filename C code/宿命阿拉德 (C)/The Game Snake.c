@@ -1,111 +1,99 @@
-#include "Head.h"
+ï»¿#include "Head.h"
 
-/*********************  À´Ô´£ºCSDN Sriven *********************/
+/*********************  æ¥æºï¼šCSDN Sriven *********************/
 
 #define R 24
 #define H 24
 #define W 48
-#define UP 'w'  //ÉÏ
-#define DOWN 's'  //ÏÂ
-#define LEFT 'a'  //×ó
-#define RIGHT 'd'  //ÓÒ
-void getfood();//²úÉúÊ³Îï
-void start();//³õÊ¼½çÃæ
-void gameover();//ÓÎÏ·½áÊø
-void Play();//ÓÎÏ·¹ı³ÌF
-void gotoxy(int, int);//¶¨Î»×ø±ê
-void wall();//Ç½£»
+#define UP 'w'  //ä¸Š
+#define DOWN 's'  //ä¸‹
+#define LEFT 'a'  //å·¦
+#define RIGHT 'd'  //å³
+void getfood();//äº§ç”Ÿé£Ÿç‰©
+void start();//åˆå§‹ç•Œé¢
+void gameover();//æ¸¸æˆç»“æŸ
+void Play();//æ¸¸æˆè¿‡ç¨‹F
+void gotoxy(int, int);//å®šä½åæ ‡
+void wall();//å¢™ï¼›
 void gamerule();
-void menu();//ÓÎÏ·²Ëµ¥
-void chushihua();//³õÊ¼»¯Éß
+void menu();//æ¸¸æˆèœå•
+void chushihua();//åˆå§‹åŒ–è›‡
 void move();
-void print();//´òÓ¡Éß
-void HideCursor();//Òş²Ø¹â±ê
-void turn(char);//¸Ä±ä·½Ïò
-void getfood();//Ëæ»ú»ñÈ¡Ê³Îï
-void eatfood();//³ÔÊ³Îï
-int die();//ÅĞ¶ÏÊÇ·ñËÀÍö
-struct Snake
-{
-	int x[100];//x[0]±íÊ¾ÉßÎ²µÄºá×ø±ê
-	int y[100];//y[0]±íÊ¾ÉßÎ²µÄ×İ×ø±ê
-	int length;//ÉßµÄ³¤¶È
-	int speed;//ÉßµÄËÙ¶È
-	int count;//Éß³ÔµÄÊ³ÎïÊıÁ¿
+void print();//æ‰“å°è›‡
+void HideCursor();//éšè—å…‰æ ‡
+void turn(char);//æ”¹å˜æ–¹å‘
+void getfood();//éšæœºè·å–é£Ÿç‰©
+void eatfood();//åƒé£Ÿç‰©
+int die();//åˆ¤æ–­æ˜¯å¦æ­»äº¡
+struct Snake {
+	int x[100];//x[0]è¡¨ç¤ºè›‡å°¾çš„æ¨ªåæ ‡
+	int y[100];//y[0]è¡¨ç¤ºè›‡å°¾çš„çºµåæ ‡
+	int length;//è›‡çš„é•¿åº¦
+	int speed;//è›‡çš„é€Ÿåº¦
+	int count;//è›‡åƒçš„é£Ÿç‰©æ•°é‡
 }snake;
-struct Food
-{
+struct Food {
 	int x;
 	int y;
 }food;
 int i, j;
-int a[2];//a[1]´¢´æÉßÎ²µÄ×İ×ø±ê£¬a[0]´¢´æÉßÎ²µÄºá×ø±ê
-void HideCursor()//Òş²Ø¹â±ê
+int a[2];//a[1]å‚¨å­˜è›‡å°¾çš„çºµåæ ‡ï¼Œa[0]å‚¨å­˜è›‡å°¾çš„æ¨ªåæ ‡
+void HideCursor()//éšè—å…‰æ ‡
 {
 	CONSOLE_CURSOR_INFO cursor_info = { 1, 0 };
 	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursor_info);
 }
-void toxy(int x, int y)//½«¹â±êÒÆ¶¯µ½X,Y×ø±ê´¦
+void toxy(int x, int y)//å°†å…‰æ ‡ç§»åŠ¨åˆ°X,Yåæ ‡å¤„
 {
 	COORD pos = { x , y };
 	HANDLE Out = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleCursorPosition(Out, pos);
 }
-void start()//ÌØĞ§
+void start()//ç‰¹æ•ˆ
 {
 	int x, y, i, j;
 	system("color 72");
-	for (i = 0; i<10; i++)
-	{
+	for (i = 0; i < 10; i++) {
 		x = i;
-		for (y = x; y<24 - x; y++)
-		{
+		for (y = x; y < 24 - x; y++) {
 			toxy(2 * x, y);
 			printf("0 ");
 		}
 		x = (23 - i);
-		for (y = i; y <= x; y++)
-		{
+		for (y = i; y <= x; y++) {
 			toxy(2 * x, y);
 			printf("0 ");
 		}
 		x = i;
-		for (y = x; y<24 - x; y++)
-		{
+		for (y = x; y < 24 - x; y++) {
 			toxy(2 * y, x);
 			printf("0 ");
 		}
 		x = (23 - i);
-		for (y = i; y <= x; y++)
-		{
+		for (y = i; y <= x; y++) {
 			toxy(2 * y, x);
 			printf("0 ");
 		}
 		Sleep(100);
 	}
-	for (i = 0; i<10; i++)
-	{
+	for (i = 0; i < 10; i++) {
 		x = i;
-		for (y = x; y<R - x; y++)
-		{
+		for (y = x; y < R - x; y++) {
 			toxy(2 * x, y);
 			printf("  ");
 		}
 		x = (23 - i);
-		for (y = i; y <= x; y++)
-		{
+		for (y = i; y <= x; y++) {
 			toxy(2 * x, y);
 			printf("  ");
 		}
 		x = i;
-		for (y = x; y<R - x; y++)
-		{
+		for (y = x; y < R - x; y++) {
 			toxy(2 * y, x);
 			printf("  ");
 		}
 		x = (23 - i);
-		for (y = i; y <= x; y++)
-		{
+		for (y = i; y <= x; y++) {
 			toxy(2 * y, x);
 			printf("  ");
 		}
@@ -113,69 +101,60 @@ void start()//ÌØĞ§
 	}
 
 }
-void wall()//±ß½ç
+void wall()//è¾¹ç•Œ
 {
 	system("color 74");
 	system("cls");
 	int i, j, map[H][W];
-	for (i = 0; i<H; i++)
-	{
-		for (j = 0; j<W; j++)
-		{
-			if (i == 0 || i == H - 1 || j == 0 || j == W - 1)
-			{
+	for (i = 0; i < H; i++) {
+		for (j = 0; j < W; j++) {
+			if (i == 0 || i == H - 1 || j == 0 || j == W - 1) {
 				map[i][j] = '0';
-			}
-			else
-			{
+			} else {
 				map[i][j] = ' ';
 			}
 		}
 	}
-	for (i = 0; i<H; i++)
-	{
-		for (j = 0; j<W; j++)
-		{
+	for (i = 0; i < H; i++) {
+		for (j = 0; j < W; j++) {
 			//toxy(j,i);
 			printf("%c", map[i][j]);
 		}
 		printf("\n");
 	}
 }
-void menu()//²Ëµ¥
+void menu()//èœå•
 {
 	toxy(20, 5);
-	printf("Ì°³ÔÉß");
+	printf("è´ªåƒè›‡");
 	toxy(19, 7);
-	printf("1.¿ªÊ¼ÓÎÏ·");
+	printf("1.å¼€å§‹æ¸¸æˆ");
 	toxy(19, 9);
-	printf("2.ÓÎÏ·¹æÔò");
+	printf("2.æ¸¸æˆè§„åˆ™");
 	toxy(19, 11);
-	printf("3.ÍË³öÓÎÏ·");
+	printf("3.é€€å‡ºæ¸¸æˆ");
 	toxy(19, 13);
 	printf("By---Sriven");
 }
-void gamerule()
-{
+void gamerule() {
 	system("cls");
 	toxy(20, 11);
-	printf("ÓÎÏ·¹æÔò");
+	printf("æ¸¸æˆè§„åˆ™");
 	start();
 	system("cls");
 	wall();
 	toxy(1, 1);
-	printf("1.ÓÃw£¬s£¬a£¬d¿ØÖÆÌ°³ÔÉßµÄ·½Ïò");
+	printf("1.ç”¨wï¼Œsï¼Œaï¼Œdæ§åˆ¶è´ªåƒè›‡çš„æ–¹å‘");
 	toxy(1, 3);
-	printf("2.µ±Ì°³ÔÉß³Ôµ½Ê³Îïºó£¬\nÌ°³ÔÉßÉí×Ó±ä³¤");
+	printf("2.å½“è´ªåƒè›‡åƒåˆ°é£Ÿç‰©åï¼Œ\nè´ªåƒè›‡èº«å­å˜é•¿");
 	toxy(1, 5);
-	printf("3.Èç¹ûÌ°³ÔÉßµÄÍ·²¿Åöµ½Ç½±Ú»òÕßÅöµ½×Ô¼ºµÄÉíÌå£¬\nÔòÓÎÏ·½áÊø");
+	printf("3.å¦‚æœè´ªåƒè›‡çš„å¤´éƒ¨ç¢°åˆ°å¢™å£æˆ–è€…ç¢°åˆ°è‡ªå·±çš„èº«ä½“ï¼Œ\nåˆ™æ¸¸æˆç»“æŸ");
 	getch();
 	toxy(20, 11);
-	printf("Ì°³ÔÉß");
+	printf("è´ªåƒè›‡");
 	start();
 }
-void gameover()
-{
+void gameover() {
 	system("cls");
 	system("color 71");
 	wall();
@@ -185,24 +164,22 @@ void gameover()
 	exit(0);
 	getch();
 }
-void chushihua()//³õÊ¼»¯Éß
+void chushihua()//åˆå§‹åŒ–è›‡
 {
 	snake.length = 3;
 	snake.speed = 500;
 	snake.count = 0;
 	snake.x[0] = 8;
 	snake.y[0] = 10;
-	for (i = 1; i<snake.length; i++)
-	{
+	for (i = 1; i < snake.length; i++) {
 		snake.x[i] = snake.x[i - 1] + 1;
 		snake.y[i] = snake.y[i - 1];
 	}
 }
-void move()
-{
+void move() {
 	toxy(snake.x[0], snake.y[0]);
 	printf(" ");
-	for (i = 1; i<snake.length; i++)//½«ÉßµÄÇ°Ò»½Ú×ø±ê¸³¸øºóÒ»½Ú
+	for (i = 1; i < snake.length; i++)//å°†è›‡çš„å‰ä¸€èŠ‚åæ ‡èµ‹ç»™åä¸€èŠ‚
 	{
 		snake.x[i - 1] = snake.x[i];
 		snake.y[i - 1] = snake.y[i];
@@ -210,137 +187,107 @@ void move()
 	//snake.x[snake.length-1]=snake.x[snake.length-2]+2;
 	//snake.y[snake.length-1]=snake.y[snake.length-2];
 }
-void print()//´òÓ¡Éß
+void print()//æ‰“å°è›‡
 {
-	for (i = 0; i<snake.length; i++)
-	{
+	for (i = 0; i < snake.length; i++) {
 		toxy(snake.x[i], snake.y[i]);
-		if (i == 0)
-		{
+		if (i == 0) {
 			printf("+");
-		}
-		else if (i == snake.length - 1)
-		{
+		} else if (i == snake.length - 1) {
 			printf("+");
-		}
-		else
-		{
+		} else {
 			printf("+");
 		}
 	}
 	system("color 71");
 	toxy(50, 11);
-	/*printf("°´0½áÊøÓÎÏ·");
+	/*printf("æŒ‰0ç»“æŸæ¸¸æˆ");
 	toxy(50, 0);
-	printf("·ÖÊı£º%d", 10 * snake.count);
+	printf("åˆ†æ•°ï¼š%d", 10 * snake.count);
 	toxy(50, 2);
-	printf("µ±Ç°ËÙ¶ÈÎª£º%d", snake.speed);
+	printf("å½“å‰é€Ÿåº¦ä¸ºï¼š%d", snake.speed);
 	toxy(50, 5);
-	printf("1.ÓÃw£¬s£¬a£¬d¿ØÖÆÌ°³ÔÉßµÄ·½Ïò");
+	printf("1.ç”¨wï¼Œsï¼Œaï¼Œdæ§åˆ¶è´ªåƒè›‡çš„æ–¹å‘");
 	toxy(50, 7);
-	printf("2.µ±Ì°³ÔÉß³Ôµ½Ê³Îïºó£¬Ì°³ÔÉßÉí×Ó±ä³¤,Ã¿³Ô5¸öÊ³Îï£¬ËÙ¶ÈÔö¼Ó");
+	printf("2.å½“è´ªåƒè›‡åƒåˆ°é£Ÿç‰©åï¼Œè´ªåƒè›‡èº«å­å˜é•¿,æ¯åƒ5ä¸ªé£Ÿç‰©ï¼Œé€Ÿåº¦å¢åŠ ");
 	toxy(50, 9);
-	printf("3.Èç¹ûÌ°³ÔÉßµÄÍ·²¿Åöµ½Ç½±Ú»òÕßÅöµ½×Ô¼ºµÄÉíÌå£¬ÔòÓÎÏ·½áÊø");
+	printf("3.å¦‚æœè´ªåƒè›‡çš„å¤´éƒ¨ç¢°åˆ°å¢™å£æˆ–è€…ç¢°åˆ°è‡ªå·±çš„èº«ä½“ï¼Œåˆ™æ¸¸æˆç»“æŸ");
 	toxy(60, 15);
 	printf("By---Sriven");*/
 }
-void turn(char direction)//»ñÈ¡·½Ïò
+void turn(char direction)//è·å–æ–¹å‘
 {
-	if (direction == 'w')
-	{
+	if (direction == 'w') {
 		snake.y[snake.length - 1]--;
-	}
-	else if (direction == 's')
-	{
+	} else if (direction == 's') {
 		snake.y[snake.length - 1]++;
-	}
-	else if (direction == 'a')
-	{
+	} else if (direction == 'a') {
 		snake.x[snake.length - 1] -= 1;
-	}
-	else if (direction == 'd')
-	{
+	} else if (direction == 'd') {
 		snake.x[snake.length - 1] += 1;
 	}
 }
-void getfood()
-{
+void getfood() {
 	//wall();
 	srand(time(NULL));
-	while (1)
-	{
+	while (1) {
 		food.x = rand() % 44 + 2;
 		food.y = rand() % 21 + 2;
-		for (i = 0; i<snake.length; i++)
-		{
-			if (food.x == snake.x[i] && food.y == snake.y[i])
-			{
+		for (i = 0; i < snake.length; i++) {
+			if (food.x == snake.x[i] && food.y == snake.y[i]) {
 				break;
 			}
 		}
-		if (i == snake.length)
-		{
+		if (i == snake.length) {
 			toxy(food.x, food.y);
 			printf("*"); break;
 		}
 	}
 }
-void eatfood()
-{
-	if (food.x == snake.x[snake.length - 1] && food.y == snake.y[snake.length - 1])
-	{
+void eatfood() {
+	if (food.x == snake.x[snake.length - 1] && food.y == snake.y[snake.length - 1]) {
 		snake.length++;
 		snake.count++;
-		for (i = snake.length - 1; i >= 1; i--)
-		{
+		for (i = snake.length - 1; i >= 1; i--) {
 			snake.x[i] = snake.x[i - 1];
 			snake.y[i] = snake.y[i - 1];
 		}
 		snake.x[0] = a[0];
 		snake.y[0] = a[1];
-		if (snake.count % 5 == 0)
-		{
-			if (snake.count >= 40)
-			{
+		if (snake.count % 5 == 0) {
+			if (snake.count >= 40) {
 				snake.speed = 100;
-			}
-			else
+			} else
 				snake.speed -= 50;
 		}
 		getfood();
 	}
 }
-int die()
-{
+int die() {
 	int flag = 0;
-	for (i = 0; i<snake.length - 1; i++)
-	{
-		if (snake.x[snake.length - 1] == snake.x[i] && snake.y[snake.length - 1] == snake.y[i])
-		{
+	for (i = 0; i < snake.length - 1; i++) {
+		if (snake.x[snake.length - 1] == snake.x[i] && snake.y[snake.length - 1] == snake.y[i]) {
 			flag = 1;
 		}
 	}
-	if (snake.x[snake.length - 1] == 0 || snake.x[snake.length - 1] == W - 1 || snake.y[snake.length - 1] == 0 || snake.y[snake.length - 1] == H - 1)
-	{
+	if (snake.x[snake.length - 1] == 0 || snake.x[snake.length - 1] == W - 1 || snake.y[snake.length - 1] == 0 || snake.y[snake.length - 1] == H - 1) {
 		flag = 1;
 	}
 	return(flag);
 }
-void Play()
-{
+void Play() {
 	toxy(20, 11);
-	printf("¿ªÊ¼ÓÎÏ·");
+	printf("å¼€å§‹æ¸¸æˆ");
 	start();
 	system("cls");
 	char t = 'd';
 	wall();
 	chushihua();
 	getfood();
-	while (1)
-	{
+	while (1) {
 		a[0] = snake.x[0];
 		a[1] = snake.y[0];
-		if (kbhit())//ÅĞ¶ÏÊÇ·ñÓĞ°´¼ü
+		if (kbhit())//åˆ¤æ–­æ˜¯å¦æœ‰æŒ‰é”®
 		{
 			t = getch();
 		}
@@ -349,8 +296,7 @@ void Play()
 		turn(t);
 		eatfood();
 		print();
-		if (die())
-		{
+		if (die()) {
 			toxy(20, 12);
 			printf("Game over!");
 			Sleep(2000);
@@ -359,29 +305,26 @@ void Play()
 		Sleep(snake.speed);
 	}
 }
-void GameSnake()
-{
+void GameSnake() {
 	system("color 72");
-	HideCursor();//Òş²Ø¹â±ê
+	HideCursor();//éšè—å…‰æ ‡
 	toxy(20, 11);
-	printf("Ì°³ÔÉß");
+	printf("è´ªåƒè›‡");
 	start();
 	system("color 70");
 
-	do
-	{
+	do {
 		system("cls");
 		HideCursor();
 		char n;
 		wall();
 		menu();
 		n = getch();
-		switch (n)
-		{
-		case '1':Play(); break;
-		case '2':gamerule(); break;
-		case '3':gameover(); break;
-		default:printf("Please input 1~3:"); break;
+		switch (n) {
+			case '1':Play(); break;
+			case '2':gamerule(); break;
+			case '3':gameover(); break;
+			default:printf("Please input 1~3:"); break;
 		}
-	} while (1);//ÓÀÔ¶ÎªÕæ
+	} while (1);//æ°¸è¿œä¸ºçœŸ
 }

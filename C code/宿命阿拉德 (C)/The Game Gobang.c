@@ -1,6 +1,6 @@
-#include "Head.h"
+ï»¿#include "Head.h"
 
-/*********************  À´Ô´£ºCSDN hello_simon *********************/
+/*********************  æ¥æºï¼šCSDN hello_simon *********************/
 
 #define WIDTH 15
 #define HIGHT 15
@@ -8,16 +8,16 @@
 #define BLACK 1
 #define WIN 2
 
-char WHITE_FLAG='O';//´óĞ´o
-char BLACK_FLAG='@';
+char WHITE_FLAG = 'O';//å¤§å†™o
+char BLACK_FLAG = '@';
 
 char map[WIDTH][HIGHT];
-int qinxingPC[WIDTH][HIGHT]={0};
-int qinxingPlayer[WIDTH][HIGHT]={0};
+int qinxingPC[WIDTH][HIGHT] = { 0 };
+int qinxingPlayer[WIDTH][HIGHT] = { 0 };
 
 int player = BLACK;
 
-int jieguo( int left, int right, int count, int k, char num );
+int jieguo(int left, int right, int count, int k, char num);
 void init_map();
 void draw_pc_map();
 void draw_player_map();
@@ -26,7 +26,7 @@ int heng(int hang, int lie, char whoFlag);
 int shu(int hang, int lie, char whoFlag);
 int zuoxie(int hang, int lie, char whoFlag);
 int youxie(int hang, int lie, char whoFlag);
-int jieguo( int left, int right, int count, int k, char num );
+int jieguo(int left, int right, int count, int k, char num);
 void pcLoad();
 void jifeng();
 int playerLoad();
@@ -34,501 +34,501 @@ int is_win();
 
 
 int GameGobang(void) {
-    int result;
-    int nums;
-    init_map();
+	int result;
+	int nums;
+	init_map();
 
-    draw_map();
+	draw_map();
 
-    for (nums = 0; nums < 225; nums++) {
-        if (player == BLACK) {
-            //Íæ¼ÒÏÂ×Ó
-            printf("please white(%c) play\n",WHITE_FLAG);
-            player = WHITE;
-            result = playerLoad();
-            if( !result ) break;
-        } else {
-            //µçÄÔÏÂ×Ó
-            player = BLACK;
-            pcLoad();
-        }
+	for (nums = 0; nums < 225; nums++) {
+		if (player == BLACK) {
+			//ç©å®¶ä¸‹å­
+			printf("please white(%c) play\n", WHITE_FLAG);
+			player = WHITE;
+			result = playerLoad();
+			if (!result) break;
+		} else {
+			//ç”µè„‘ä¸‹å­
+			player = BLACK;
+			pcLoad();
+		}
 
-        draw_map();
-        if ( is_win() ) {
-            if (player == WHITE) {
-                printf("WHITE(%c) is winner.\n",WHITE_FLAG);
-            } else {
-                printf("BLACK(%c) is winner.\n",BLACK_FLAG);
-            }
-            break;
-        }
+		draw_map();
+		if (is_win()) {
+			if (player == WHITE) {
+				printf("WHITE(%c) is winner.\n", WHITE_FLAG);
+			} else {
+				printf("BLACK(%c) is winner.\n", BLACK_FLAG);
+			}
+			break;
+		}
 
-    }
+	}
 
 
 }
 
 void init_map() {
-    int i = 0;
-    int j = 0;
-    for (i = 0; i < HIGHT; i++) {
-        for (j = 0; j < WIDTH; j++) {
-            map[i][j] = '+';
-        }
-    }
+	int i = 0;
+	int j = 0;
+	for (i = 0; i < HIGHT; i++) {
+		for (j = 0; j < WIDTH; j++) {
+			map[i][j] = '+';
+		}
+	}
 }
 
 void draw_pc_map() {
-    int i, j, k;
+	int i, j, k;
 
-    for (i = 0; i < WIDTH; i++) {
-        for (j = 0; j < WIDTH; j++) {
-            printf("%d",qinxingPC[i][j]);
-            if(j<(WIDTH-1)) printf("-");
-        }
-        putchar('\n');
-    }
+	for (i = 0; i < WIDTH; i++) {
+		for (j = 0; j < WIDTH; j++) {
+			printf("%d", qinxingPC[i][j]);
+			if (j < (WIDTH - 1)) printf("-");
+		}
+		putchar('\n');
+	}
 }
 
 void draw_player_map() {
-    int i=0, j=0;
+	int i = 0, j = 0;
 
-    for (i = 0; i < WIDTH; i++) {
-        for (j = 0; j < WIDTH; j++) {
-            printf("%d",qinxingPlayer[i][j]);
-            if(j<(WIDTH-1)) printf("-");
-        }
-        putchar('\n');
-    }
+	for (i = 0; i < WIDTH; i++) {
+		for (j = 0; j < WIDTH; j++) {
+			printf("%d", qinxingPlayer[i][j]);
+			if (j < (WIDTH - 1)) printf("-");
+		}
+		putchar('\n');
+	}
 }
 
 void draw_map() {
-    int i=0, j=0, k=0;
+	int i = 0, j = 0, k = 0;
 
-    system("cls");
+	system("cls");
 
-    printf("    ");
-    for (k = 0; k < HIGHT; k++) {
-        if( k>=0 && k<=8){
-            printf("%d ",k+1);
-        }else{
-            printf("%d",k+1);
-        }
-    }
-    putchar('\n');
-    for (i = 0; i < WIDTH; i++) {
-        printf("Y");
-        if( i>=0 && i<=8){
-            printf("0%d ",i+1);
-        }else{
-            printf("%d ",i+1);
-        }
-        for (j = 0; j < WIDTH; j++) {
-            putchar(map[i][j]);
-            if(j<(WIDTH-1)) putchar('-');
-        }
-        putchar('\n');
-    }
+	printf("    ");
+	for (k = 0; k < HIGHT; k++) {
+		if (k >= 0 && k <= 8) {
+			printf("%d ", k + 1);
+		} else {
+			printf("%d", k + 1);
+		}
+	}
+	putchar('\n');
+	for (i = 0; i < WIDTH; i++) {
+		printf("Y");
+		if (i >= 0 && i <= 8) {
+			printf("0%d ", i + 1);
+		} else {
+			printf("%d ", i + 1);
+		}
+		for (j = 0; j < WIDTH; j++) {
+			putchar(map[i][j]);
+			if (j < (WIDTH - 1)) putchar('-');
+		}
+		putchar('\n');
+	}
 }
 
-int heng(int hang, int lie, char whoFlag){
-    int spaceNum=0;//¿Õ°×Êı
-    int count =1;//¼¸Á¬£¬°üº¬µ±Ç°ÒªÏÂµÄ×Ó
-    int leftHad=0;//×ó±ßÊÇ·ñÓĞÍ¬×Ó
-    int x=hang;
-    int y=lie;
-    int liveLeft = 0;
-    int liveRight=0;
+int heng(int hang, int lie, char whoFlag) {
+	int spaceNum = 0;//ç©ºç™½æ•°
+	int count = 1;//å‡ è¿ï¼ŒåŒ…å«å½“å‰è¦ä¸‹çš„å­
+	int leftHad = 0;//å·¦è¾¹æ˜¯å¦æœ‰åŒå­
+	int x = hang;
+	int y = lie;
+	int liveLeft = 0;
+	int liveRight = 0;
 
-    if( map[hang][lie] != '+' ){
-        return 0;
-    }
-    while( y>0 && ( map[x][y-1]=='+' || map[x][y-1]==whoFlag ) ){
-        if( map[x][y-1]=='+' && spaceNum<1 ){//µÚÒ»¸ö¿Õ°×
-            if( map[x][y-2] != whoFlag ){
-                liveLeft = 1;
-                break;
-            }
-            spaceNum++;
-            y--;
-        }else if( map[x][y-1] == whoFlag ){
-            leftHad=1;
-            y--;
-            count++;
-        }else{//µÚ2¸ö¿Õ°×
-            liveLeft=1;
-            break;
-        }
-    }
+	if (map[hang][lie] != '+') {
+		return 0;
+	}
+	while (y > 0 && (map[x][y - 1] == '+' || map[x][y - 1] == whoFlag)) {
+		if (map[x][y - 1] == '+' && spaceNum < 1) {//ç¬¬ä¸€ä¸ªç©ºç™½
+			if (map[x][y - 2] != whoFlag) {
+				liveLeft = 1;
+				break;
+			}
+			spaceNum++;
+			y--;
+		} else if (map[x][y - 1] == whoFlag) {
+			leftHad = 1;
+			y--;
+			count++;
+		} else {//ç¬¬2ä¸ªç©ºç™½
+			liveLeft = 1;
+			break;
+		}
+	}
 
-    //Èç¹û×ó±ßÃ»ÓĞÍ¬É«×Ó£¬ÉèÖÃ¿Õ°×ÊıÎª0
-    if( !leftHad ){
-        spaceNum=0;
-    }
+	//å¦‚æœå·¦è¾¹æ²¡æœ‰åŒè‰²å­ï¼Œè®¾ç½®ç©ºç™½æ•°ä¸º0
+	if (!leftHad) {
+		spaceNum = 0;
+	}
 
-    y=lie;
-    while( y<14 && ( map[x][y+1]=='+' || map[x][y+1]==whoFlag ) ){
-        if( map[x][y+1]=='+' && spaceNum<1){//µÚÒ»¸ö¿Õ°×
-            if( map[x][y+2] != whoFlag ){
-                liveRight = 1;
-                break;
-            }
-            spaceNum++;
-            y++;
-        }else if( map[x][y+1]=='+' && spaceNum>0 ){//µÚ2¸ö¿Õ°×
-            liveRight = 1;
-            break;
-        }else{
-            y++;
-            count++;
-        }
+	y = lie;
+	while (y < 14 && (map[x][y + 1] == '+' || map[x][y + 1] == whoFlag)) {
+		if (map[x][y + 1] == '+' && spaceNum < 1) {//ç¬¬ä¸€ä¸ªç©ºç™½
+			if (map[x][y + 2] != whoFlag) {
+				liveRight = 1;
+				break;
+			}
+			spaceNum++;
+			y++;
+		} else if (map[x][y + 1] == '+' && spaceNum > 0) {//ç¬¬2ä¸ªç©ºç™½
+			liveRight = 1;
+			break;
+		} else {
+			y++;
+			count++;
+		}
 
-    }
-    return jieguo( liveLeft,liveRight, count,spaceNum, whoFlag );
+	}
+	return jieguo(liveLeft, liveRight, count, spaceNum, whoFlag);
 }
 
-int shu(int hang, int lie, char whoFlag){
-    int spaceNum=0;//¿Õ°×Êı
-    int count =1;//¼¸Á¬£¬°üº¬µ±Ç°ÒªÏÂµÄ×Ó
-    int topHad=0;//ÉÏ±ßÊÇ·ñÓĞÍ¬×Ó
-    int x=hang;
-    int y=lie;
-    int liveLeft = 0;
-    int liveRight=0;
+int shu(int hang, int lie, char whoFlag) {
+	int spaceNum = 0;//ç©ºç™½æ•°
+	int count = 1;//å‡ è¿ï¼ŒåŒ…å«å½“å‰è¦ä¸‹çš„å­
+	int topHad = 0;//ä¸Šè¾¹æ˜¯å¦æœ‰åŒå­
+	int x = hang;
+	int y = lie;
+	int liveLeft = 0;
+	int liveRight = 0;
 
-    if( map[hang][lie] != '+' ){
-        return 0;
-    }
-    while( x>0 && ( map[x-1][y]=='+' || map[x-1][y]==whoFlag ) ){
-        if( map[x-1][y]=='+' && spaceNum<1 ){//µÚÒ»¸ö¿Õ°×
-            if( map[x-2][y] != whoFlag ){
-                liveLeft = 1;
-                break;
-            }
-            spaceNum++;
-            x--;
-        }else if( map[x-1][y] == whoFlag ){
-            topHad=1;
-            x--;
-            count++;
-        }else{//µÚ2¸ö¿Õ°×
-            liveLeft=1;
-            break;
-        }
-    }
+	if (map[hang][lie] != '+') {
+		return 0;
+	}
+	while (x > 0 && (map[x - 1][y] == '+' || map[x - 1][y] == whoFlag)) {
+		if (map[x - 1][y] == '+' && spaceNum < 1) {//ç¬¬ä¸€ä¸ªç©ºç™½
+			if (map[x - 2][y] != whoFlag) {
+				liveLeft = 1;
+				break;
+			}
+			spaceNum++;
+			x--;
+		} else if (map[x - 1][y] == whoFlag) {
+			topHad = 1;
+			x--;
+			count++;
+		} else {//ç¬¬2ä¸ªç©ºç™½
+			liveLeft = 1;
+			break;
+		}
+	}
 
-    //Èç¹û×ó±ßÃ»ÓĞÍ¬É«×Ó£¬ÉèÖÃ¿Õ°×ÊıÎª0
-    if( !topHad ){
-        spaceNum=0;
-    }
-    x=hang;
-    while( x<14 && ( map[x+1][y]=='+' || map[x+1][y]==whoFlag ) ){
-        if( map[x+1][y]=='+' && spaceNum<1){//µÚÒ»¸ö¿Õ°×
-            if( map[x+2][y] != whoFlag ){
-                liveRight = 1;
-                break;
-            }
-            spaceNum++;
-            x++;
-        }else if( map[x+1][y]=='+' && spaceNum>0 ){//µÚ2¸ö¿Õ°×
-            liveRight = 1;
-            break;
-        }else{
-            x++;
-            count++;
-        }
+	//å¦‚æœå·¦è¾¹æ²¡æœ‰åŒè‰²å­ï¼Œè®¾ç½®ç©ºç™½æ•°ä¸º0
+	if (!topHad) {
+		spaceNum = 0;
+	}
+	x = hang;
+	while (x < 14 && (map[x + 1][y] == '+' || map[x + 1][y] == whoFlag)) {
+		if (map[x + 1][y] == '+' && spaceNum < 1) {//ç¬¬ä¸€ä¸ªç©ºç™½
+			if (map[x + 2][y] != whoFlag) {
+				liveRight = 1;
+				break;
+			}
+			spaceNum++;
+			x++;
+		} else if (map[x + 1][y] == '+' && spaceNum > 0) {//ç¬¬2ä¸ªç©ºç™½
+			liveRight = 1;
+			break;
+		} else {
+			x++;
+			count++;
+		}
 
-    }
-    return jieguo( liveLeft,liveRight, count,spaceNum, whoFlag );
+	}
+	return jieguo(liveLeft, liveRight, count, spaceNum, whoFlag);
 }
 
 
 // +-+-+-@-+-+
 // +-+-@-+-+
 // +-@-+-+-+
-int zuoxie(int hang, int lie, char whoFlag){
-    int spaceNum=0;//¿Õ°×Êı
-    int count =1;//¼¸Á¬£¬°üº¬µ±Ç°ÒªÏÂµÄ×Ó
-    int topHad=0;//ÉÏ±ßÊÇ·ñÓĞÍ¬×Ó
-    int x=hang;
-    int y=lie;
-    int liveLeft = 0;
-    int liveRight=0;
+int zuoxie(int hang, int lie, char whoFlag) {
+	int spaceNum = 0;//ç©ºç™½æ•°
+	int count = 1;//å‡ è¿ï¼ŒåŒ…å«å½“å‰è¦ä¸‹çš„å­
+	int topHad = 0;//ä¸Šè¾¹æ˜¯å¦æœ‰åŒå­
+	int x = hang;
+	int y = lie;
+	int liveLeft = 0;
+	int liveRight = 0;
 
-    if( map[hang][lie] != '+' ){
-        return 0;
-    }
-    //ÏòÏÂ
-    while( x<14 && y>0 && ( map[x+1][y-1]=='+' || map[x+1][y-1]==whoFlag ) ){
-        if( map[x+1][y-1]=='+' && spaceNum<1 ){//µÚÒ»¸ö¿Õ°×
-            if( map[x+2][y-2] != whoFlag ){
-                liveLeft = 1;
-                break;
-            }
-            spaceNum++;
-            x++;
-            y--;
-        }else if( map[x+1][y-1] == whoFlag ){
-            topHad=1;
-            x++;
-            y--;
-            count++;
-        }else{//µÚ2¸ö¿Õ°×
-            liveLeft=1;
-            break;
-        }
-    }
+	if (map[hang][lie] != '+') {
+		return 0;
+	}
+	//å‘ä¸‹
+	while (x < 14 && y>0 && (map[x + 1][y - 1] == '+' || map[x + 1][y - 1] == whoFlag)) {
+		if (map[x + 1][y - 1] == '+' && spaceNum < 1) {//ç¬¬ä¸€ä¸ªç©ºç™½
+			if (map[x + 2][y - 2] != whoFlag) {
+				liveLeft = 1;
+				break;
+			}
+			spaceNum++;
+			x++;
+			y--;
+		} else if (map[x + 1][y - 1] == whoFlag) {
+			topHad = 1;
+			x++;
+			y--;
+			count++;
+		} else {//ç¬¬2ä¸ªç©ºç™½
+			liveLeft = 1;
+			break;
+		}
+	}
 
-    //Èç¹ûÉÏ±ßÃ»ÓĞÍ¬É«×Ó£¬ÉèÖÃ¿Õ°×ÊıÎª0
-    if( !topHad ){
-        spaceNum=0;
-    }
+	//å¦‚æœä¸Šè¾¹æ²¡æœ‰åŒè‰²å­ï¼Œè®¾ç½®ç©ºç™½æ•°ä¸º0
+	if (!topHad) {
+		spaceNum = 0;
+	}
 
-    x=hang;
-    y=lie;
+	x = hang;
+	y = lie;
 
-    //ÏòÉÏ
-    while( x>0 && y<14 && ( map[x-1][y+1]=='+' || map[x-1][y+1]==whoFlag ) ){
-        if( map[x-1][y+1]=='+' && spaceNum<1){//µÚÒ»¸ö¿Õ°×
-            if( map[x-2][y+2] != whoFlag ){
-                liveRight = 1;
-                break;
-            }
-            spaceNum++;
-            x--;
-            y++;
-        }else if( map[x-1][y+1]=='+' && spaceNum>0 ){//µÚ2¸ö¿Õ°×
-            liveRight = 1;
-            break;
-        }else{
-            x--;
-            y++;
-            count++;
-        }
+	//å‘ä¸Š
+	while (x > 0 && y < 14 && (map[x - 1][y + 1] == '+' || map[x - 1][y + 1] == whoFlag)) {
+		if (map[x - 1][y + 1] == '+' && spaceNum < 1) {//ç¬¬ä¸€ä¸ªç©ºç™½
+			if (map[x - 2][y + 2] != whoFlag) {
+				liveRight = 1;
+				break;
+			}
+			spaceNum++;
+			x--;
+			y++;
+		} else if (map[x - 1][y + 1] == '+' && spaceNum > 0) {//ç¬¬2ä¸ªç©ºç™½
+			liveRight = 1;
+			break;
+		} else {
+			x--;
+			y++;
+			count++;
+		}
 
-    }
-    return jieguo( liveLeft,liveRight, count,spaceNum, whoFlag );
+	}
+	return jieguo(liveLeft, liveRight, count, spaceNum, whoFlag);
 }
 
-int youxie(int hang, int lie, char whoFlag){
-    int spaceNum=0;//¿Õ°×Êı
-    int count =1;//¼¸Á¬£¬°üº¬µ±Ç°ÒªÏÂµÄ×Ó
-    int topHad=0;//ÉÏ±ßÊÇ·ñÓĞÍ¬×Ó
-    int x=hang;
-    int y=lie;
-    int liveLeft = 0;
-    int liveRight=0;
+int youxie(int hang, int lie, char whoFlag) {
+	int spaceNum = 0;//ç©ºç™½æ•°
+	int count = 1;//å‡ è¿ï¼ŒåŒ…å«å½“å‰è¦ä¸‹çš„å­
+	int topHad = 0;//ä¸Šè¾¹æ˜¯å¦æœ‰åŒå­
+	int x = hang;
+	int y = lie;
+	int liveLeft = 0;
+	int liveRight = 0;
 
-    if( map[hang][lie] != '+' ){
-        return 0;
-    }
-    //ÏòÉÏ
-    while( x>0 && y>0 && ( map[x-1][y-1]=='+' || map[x-1][y-1]==whoFlag ) ){
-        if( map[x-1][y-1]=='+' && spaceNum<1 ){//µÚÒ»¸ö¿Õ°×
-            if( map[x-2][y-2] != whoFlag ){
-                liveLeft = 1;
-                break;
-            }
-            spaceNum++;
-            x--;
-            y--;
-        }else if( map[x-1][y-1] == whoFlag ){
-            topHad=1;
-            x--;
-            y--;
-            count++;
-        }else{//µÚ2¸ö¿Õ°×
-            liveLeft=1;
-            break;
-        }
-    }
+	if (map[hang][lie] != '+') {
+		return 0;
+	}
+	//å‘ä¸Š
+	while (x > 0 && y > 0 && (map[x - 1][y - 1] == '+' || map[x - 1][y - 1] == whoFlag)) {
+		if (map[x - 1][y - 1] == '+' && spaceNum < 1) {//ç¬¬ä¸€ä¸ªç©ºç™½
+			if (map[x - 2][y - 2] != whoFlag) {
+				liveLeft = 1;
+				break;
+			}
+			spaceNum++;
+			x--;
+			y--;
+		} else if (map[x - 1][y - 1] == whoFlag) {
+			topHad = 1;
+			x--;
+			y--;
+			count++;
+		} else {//ç¬¬2ä¸ªç©ºç™½
+			liveLeft = 1;
+			break;
+		}
+	}
 
-    //Èç¹ûÉÏ±ßÃ»ÓĞÍ¬É«×Ó£¬ÉèÖÃ¿Õ°×ÊıÎª0
-    if( !topHad ){
-        spaceNum=0;
-    }
+	//å¦‚æœä¸Šè¾¹æ²¡æœ‰åŒè‰²å­ï¼Œè®¾ç½®ç©ºç™½æ•°ä¸º0
+	if (!topHad) {
+		spaceNum = 0;
+	}
 
-    x=hang;
-    y=lie;
+	x = hang;
+	y = lie;
 
-    //ÏòÏÂ
-    while( x<14 && y<14 && ( map[x+1][y+1]=='+' || map[x+1][y+1]==whoFlag ) ){
-        if( map[x+1][y+1]=='+' && spaceNum<1){//µÚÒ»¸ö¿Õ°×
-            if( map[x+2][y+2] != whoFlag ){
-                liveRight = 1;
-                break;
-            }
-            spaceNum++;
-            x++;
-            y++;
-        }else if( map[x+1][y+1]=='+' && spaceNum>0 ){//µÚ2¸ö¿Õ°×
-            liveRight = 1;
-            break;
-        }else{
-            x++;
-            y++;
-            count++;
-        }
+	//å‘ä¸‹
+	while (x < 14 && y < 14 && (map[x + 1][y + 1] == '+' || map[x + 1][y + 1] == whoFlag)) {
+		if (map[x + 1][y + 1] == '+' && spaceNum < 1) {//ç¬¬ä¸€ä¸ªç©ºç™½
+			if (map[x + 2][y + 2] != whoFlag) {
+				liveRight = 1;
+				break;
+			}
+			spaceNum++;
+			x++;
+			y++;
+		} else if (map[x + 1][y + 1] == '+' && spaceNum > 0) {//ç¬¬2ä¸ªç©ºç™½
+			liveRight = 1;
+			break;
+		} else {
+			x++;
+			y++;
+			count++;
+		}
 
-    }
-    return jieguo( liveLeft,liveRight, count,spaceNum, whoFlag );
+	}
+	return jieguo(liveLeft, liveRight, count, spaceNum, whoFlag);
 }
 
-int jieguo( int left, int right, int count, int k, char num ){
-    if( count ==1 ){
-        return 1;
-    }else if( count == 2 ){
-        if( left && right ){//×óÓÒÁ½±ß¶¼ÊÇ¿ÕµÄ
-            if( k==0 ){
-                //µçÄÔ60
-                return num == BLACK_FLAG ? 60 : 50;
-            }else{
-                return num == BLACK_FLAG ? 40 : 35;
-            }
-        }else if( !left && !right ){
-            return 1;
-        }else{
-            return 10;
-        }
-    }else if( count == 3 ){
+int jieguo(int left, int right, int count, int k, char num) {
+	if (count == 1) {
+		return 1;
+	} else if (count == 2) {
+		if (left && right) {//å·¦å³ä¸¤è¾¹éƒ½æ˜¯ç©ºçš„
+			if (k == 0) {
+				//ç”µè„‘60
+				return num == BLACK_FLAG ? 60 : 50;
+			} else {
+				return num == BLACK_FLAG ? 40 : 35;
+			}
+		} else if (!left && !right) {
+			return 1;
+		} else {
+			return 10;
+		}
+	} else if (count == 3) {
 
-        if( left && right ){//×óÓÒÁ½±ß¶¼ÊÇ¿ÕµÄ
-            if( k==0 ){
-                //µçÄÔ950
-                return num == BLACK_FLAG ? 950 : 700;
-            }else{
-                return num == BLACK_FLAG ? 900 : 650;
-            }
-        }else if( !left && !right ){
-            return 1;
-        }else{
-            return 100;
-        }
-    }else if( count == 4 ){
-        if( left && right ){//×óÓÒÁ½±ß¶¼ÊÇ¿ÕµÄ
-            if( k==0 ){
-                return num == BLACK_FLAG ? 6000 : 3500;
-            }else{
-                return num == BLACK_FLAG ? 5000 : 3000;
-            }
-        }else if( !left && !right ){
-            return 1;
-        }else{
-            if( k==0 ){
-                return num == BLACK_FLAG ? 4000 : 800;
-            }else{
-                return num == BLACK_FLAG ? 3600 : 750;
-            }
-        }
-    }else{
-        if( k==0 ){
-            return num == BLACK_FLAG ? 20000 : 15000;
-        }else{
-            return num == BLACK_FLAG ? 10000 : 3300;
-        }
-    }
-
-}
-
-void pcLoad(){
-    jifeng();
-
-    int count=0;
-    int hang=0;
-    int lie=0;
-    int i=0;
-    int j=0;
-    for( i=0; i< 15; i++ ){
-        for( j=0; j< 15; j++ ){
-            if( qinxingPC[i][j] > count ){
-                count = qinxingPC[i][j];
-                hang = i;
-                lie = j;
-            }
-            if( qinxingPlayer[i][j] > count ){
-                count = qinxingPlayer[i][j];
-                hang = i;
-                lie = j;
-            }
-        }
-    }
-
-    printf("qinxingPC[%d][%d]:%d\n",hang,lie,qinxingPC[hang][lie]);
-    printf("qinxingPlayer[%d][%d]:%d\n",hang,lie,qinxingPlayer[hang][lie]);
-
-    if( map[hang][lie] == '+' ){
-        map[hang][lie] = BLACK_FLAG;
-    }
+		if (left && right) {//å·¦å³ä¸¤è¾¹éƒ½æ˜¯ç©ºçš„
+			if (k == 0) {
+				//ç”µè„‘950
+				return num == BLACK_FLAG ? 950 : 700;
+			} else {
+				return num == BLACK_FLAG ? 900 : 650;
+			}
+		} else if (!left && !right) {
+			return 1;
+		} else {
+			return 100;
+		}
+	} else if (count == 4) {
+		if (left && right) {//å·¦å³ä¸¤è¾¹éƒ½æ˜¯ç©ºçš„
+			if (k == 0) {
+				return num == BLACK_FLAG ? 6000 : 3500;
+			} else {
+				return num == BLACK_FLAG ? 5000 : 3000;
+			}
+		} else if (!left && !right) {
+			return 1;
+		} else {
+			if (k == 0) {
+				return num == BLACK_FLAG ? 4000 : 800;
+			} else {
+				return num == BLACK_FLAG ? 3600 : 750;
+			}
+		}
+	} else {
+		if (k == 0) {
+			return num == BLACK_FLAG ? 20000 : 15000;
+		} else {
+			return num == BLACK_FLAG ? 10000 : 3300;
+		}
+	}
 
 }
 
-//¼Ç·Ö
-void jifeng(){
-    int n=0;
-    int m=0;
-    for( n=0;n<15;n++){
-        for( m=0;m<15; m++ ){
-            qinxingPC[n][m] = heng(n,m,BLACK_FLAG)+shu(n,m,BLACK_FLAG)+zuoxie(n,m,BLACK_FLAG)+youxie(n,m,BLACK_FLAG);
-            qinxingPlayer[n][m] = heng(n,m,WHITE_FLAG)+shu(n,m,WHITE_FLAG)+zuoxie(n,m,WHITE_FLAG)+youxie(n,m,WHITE_FLAG);
-        }
-    }
+void pcLoad() {
+	jifeng();
+
+	int count = 0;
+	int hang = 0;
+	int lie = 0;
+	int i = 0;
+	int j = 0;
+	for (i = 0; i < 15; i++) {
+		for (j = 0; j < 15; j++) {
+			if (qinxingPC[i][j] > count) {
+				count = qinxingPC[i][j];
+				hang = i;
+				lie = j;
+			}
+			if (qinxingPlayer[i][j] > count) {
+				count = qinxingPlayer[i][j];
+				hang = i;
+				lie = j;
+			}
+		}
+	}
+
+	printf("qinxingPC[%d][%d]:%d\n", hang, lie, qinxingPC[hang][lie]);
+	printf("qinxingPlayer[%d][%d]:%d\n", hang, lie, qinxingPlayer[hang][lie]);
+
+	if (map[hang][lie] == '+') {
+		map[hang][lie] = BLACK_FLAG;
+	}
 
 }
 
-//Íæ¼ÒÏÂ×Ó
+//è®°åˆ†
+void jifeng() {
+	int n = 0;
+	int m = 0;
+	for (n = 0; n < 15; n++) {
+		for (m = 0; m < 15; m++) {
+			qinxingPC[n][m] = heng(n, m, BLACK_FLAG) + shu(n, m, BLACK_FLAG) + zuoxie(n, m, BLACK_FLAG) + youxie(n, m, BLACK_FLAG);
+			qinxingPlayer[n][m] = heng(n, m, WHITE_FLAG) + shu(n, m, WHITE_FLAG) + zuoxie(n, m, WHITE_FLAG) + youxie(n, m, WHITE_FLAG);
+		}
+	}
+
+}
+
+//ç©å®¶ä¸‹å­
 int playerLoad() {
-    int x, y;
-    int res;
+	int x, y;
+	int res;
 
-    printf("input y x:");
-    scanf("%d %d", &x, &y);
+	printf("input y x:");
+	scanf("%d %d", &x, &y);
 
-    if(x<0||y<0||x>HIGHT||y>WIDTH){
-        printf("input error,again\n");
-        while ((getchar()) != '\n');
-        res = playerLoad();
-        if( res == 1 ) return 1;
-    }
+	if (x<0 || y<0 || x>HIGHT || y>WIDTH) {
+		printf("input error,again\n");
+		while ((getchar()) != '\n');
+		res = playerLoad();
+		if (res == 1) return 1;
+	}
 
-    x--;
-    y--;
-    if (map[x][y] == '+') {
-        if (player == WHITE) {
-            map[x][y] = WHITE_FLAG;
-        }
-    } else {
-        printf("input error2,again\n");
-        while ((getchar()) != '\n');
-        playerLoad();
-        if( res == 1 ) return 1;
-    }
-    return 1;
+	x--;
+	y--;
+	if (map[x][y] == '+') {
+		if (player == WHITE) {
+			map[x][y] = WHITE_FLAG;
+		}
+	} else {
+		printf("input error2,again\n");
+		while ((getchar()) != '\n');
+		playerLoad();
+		if (res == 1) return 1;
+	}
+	return 1;
 }
 
 int is_win() {
-    char m;
-    int i, j;
+	char m;
+	int i, j;
 
-    if (player == WHITE) m = WHITE_FLAG;
-    else m = BLACK_FLAG;
+	if (player == WHITE) m = WHITE_FLAG;
+	else m = BLACK_FLAG;
 
-    for (i = 0; i < HIGHT; i++) {
-        for (j = 0; j < WIDTH; j++) {
-            if (map[i][j] == m) {
-                if ((i + 4) < HIGHT) {
-                    if (map[i + 1][j] == m && map[i + 2][j] == m && map[i + 3][j] == m && map[i + 4][j] == m) return 1;
-                }
-                if ((j + 4) < WIDTH) {
-                    if (map[i][j + 1] == m && map[i][j + 2] == m && map[i][j + 3] == m && map[i][j + 4] == m) return 1;
-                }
-                if ((i + 4) < HIGHT && (j + 4) < WIDTH) {
-                    if (map[i + 1][j + 1] == m && map[i + 2][j + 2] == m && map[i + 3][j + 3] == m && map[i + 4][j + 4] == m) return 1;
-                }
-                if ((i + 4) < HIGHT && (j - 4) >= 0) {
-                    if (map[i + 1][j - 1] == m && map[i + 2][j - 2] == m && map[i + 3][j - 3] == m && map[i + 4][j - 4] == m) return 1;
-                }
-            }
-        }
-    }
-    return 0;
+	for (i = 0; i < HIGHT; i++) {
+		for (j = 0; j < WIDTH; j++) {
+			if (map[i][j] == m) {
+				if ((i + 4) < HIGHT) {
+					if (map[i + 1][j] == m && map[i + 2][j] == m && map[i + 3][j] == m && map[i + 4][j] == m) return 1;
+				}
+				if ((j + 4) < WIDTH) {
+					if (map[i][j + 1] == m && map[i][j + 2] == m && map[i][j + 3] == m && map[i][j + 4] == m) return 1;
+				}
+				if ((i + 4) < HIGHT && (j + 4) < WIDTH) {
+					if (map[i + 1][j + 1] == m && map[i + 2][j + 2] == m && map[i + 3][j + 3] == m && map[i + 4][j + 4] == m) return 1;
+				}
+				if ((i + 4) < HIGHT && (j - 4) >= 0) {
+					if (map[i + 1][j - 1] == m && map[i + 2][j - 2] == m && map[i + 3][j - 3] == m && map[i + 4][j - 4] == m) return 1;
+				}
+			}
+		}
+	}
+	return 0;
 }
