@@ -104,8 +104,38 @@
 
 12. [struct内存对齐](https://www.zhihu.com/question/27862634)
 
-13. 计算机的文件存储在物理上都是二进制，文本文件和二进制文件之分，其实只是逻辑之分：C读写文本文件与二进制文件的差别仅仅体现在回车换行符，Windows下，文本文件：'\n' --- '\r\n'；二进制文件：'\n' --- '\n'（Linux下 不会对'\n'做隐式变换）。
+13. 计算机的文件存储在物理上都是二进制，文本文件和二进制文件之分，其实只是逻辑之分：C读写文本文件与二进制文件的差别仅仅体 1现在回车换行符，Windows下，文本文件：'\n' --- '\r\n'；二进制文件：'\n' --- '\n'（Linux下 不会对'\n'做隐式变换）。
 
 14. [C语言文件操作](https://www.cnblogs.com/likebeta/archive/2012/06/16/2551780.html)
 
 15. [EOF](http://www.ruanyifeng.com/blog/2011/11/eof.html)
+
+16. 编译系统 ，一图胜千言：
+
+    ![](https://i.imgur.com/rXxITh6.png)
+
+17. #define (没有类型，预处理仅是简单的字符替换)，作用 --- 1. 定义标识 2. 定义常数 3. 定义“宏函数”
+
+    ```c
+    //宏函数示例
+    //__VA_ARGS__    可变参数
+    #define LOG(LEVEL,FORMAT,...) printf(LEVEL); printf(FORMAT,__VA_ARGS__);
+    #define LOG_I(FORMAT,...) LOG("INFO:",FORMAT,__VA_ARGS__);
+    #define LOG_E(FORMAT,...) LOG("ERROR:",FORMAT,__VA_ARGS__);
+    ```
+
+18. 下面两种写法等价，表示该头文件只被包含一次，防止循环包含问题，详情参考：[C语言条件编译及编译预处理](https://www.cnblogs.com/rusty/archive/2011/03/27/1996806.html)
+
+    ```c
+    #ifndef HEAD
+    #define HEAD
+    
+    ...
+    
+    #endif
+    ```
+
+    ```c
+    #pragma once
+    ...
+    ```
