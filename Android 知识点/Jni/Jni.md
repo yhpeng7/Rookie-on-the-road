@@ -1,7 +1,8 @@
 ### Jni
 
 1. JNI (Java Native Interface)
-2. 
+2. jclass 代表native方法所属类的class对象
+3. Jni引用变量告知虚拟机何时回收一个Jni变量
 
 ### 常用命令
 
